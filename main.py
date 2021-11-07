@@ -18,8 +18,18 @@ if source == "file":    # if a file is selected
     print("Select a jpg- or jpeg-file")
     file = askopenfilename(title="Select a jpg- or jpeg-file") 
 
-    dotsCounted = countDots(file, "./save.jpg")
+    dotsCounted = 0
 
+    if file.endswith(".jpg"):
+
+        dotsCounted = countDots(file, file.replace(".jpg") + "_processed.jpg")
+
+    elif file.endswith(".jpeg"):
+
+            dotsCounted = countDots(file, file.replace(".jpeg") + "_processed.jpg")
+
+    else:
+        print("[WARNING] - File could not be processed, as it is not of type 'jpeg' or 'jpg'")
     print("Amount of dots counted: " + str(dotsCounted))
     input()
 
