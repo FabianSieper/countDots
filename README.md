@@ -2,6 +2,20 @@
 
 This project aims to count a number of dots on a image. It was originally build for counting amounts of cells on breeding grounds in order to simplify the tasks of e.g. chemists and biologists.
 
+## Installation
+
+### Requirements
+To use this application python of version `3.9.7`or higher is recommenden. Addtionally the following packages are required:
+- cv2
+- tkinter
+- tqdm
+- numpy
+
+### Pulling the project
+To pull the project using git type the following line:
+```
+git clone https://github.com/FabianSieper/countDots
+```
 ## Usage
 
 To run it simply run 

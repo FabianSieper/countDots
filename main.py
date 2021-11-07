@@ -1,4 +1,3 @@
-from cv2 import solveCubic
 from countDots import countDots
 from tkinter import Tk     
 from tkinter.filedialog import askopenfilename, askdirectory
@@ -7,7 +6,16 @@ from tqdm import tqdm
 
 import numpy as np
 
+# hide the tk window
 Tk().withdraw() 
+
+
+# create folder, in which the processed files are to be stored
+saveDir = "./processedFiles/"
+
+# only create if dir not already exists
+if not os.path.exists(saveDir):
+    os.mkdir(saveDir)
 
 # source = input("Would you like to use a file or a folder? To use a file, type 'file'!\n")
 source = ""
@@ -22,11 +30,11 @@ if source == "file":    # if a file is selected
 
     if file.endswith(".jpg"):
 
-        dotsCounted = countDots(file, file.replace(".jpg") + "_processed.jpg")
+        dotsCounted = countDots(file, os.path.join(saveDir, file.replace(".jpg") + "_processed.jpg"))
 
     elif file.endswith(".jpeg"):
 
-            dotsCounted = countDots(file, file.replace(".jpeg") + "_processed.jpg")
+            dotsCounted = countDots(file, os.path.join(saveDir, file.replace(".jpeg") + "_processed.jpg"))
 
     else:
         print("[WARNING] - File could not be processed, as it is not of type 'jpeg' or 'jpg'")
@@ -40,13 +48,6 @@ else:       # if a foulder is to be selected
 
     amountOfDotsCounted = 0     # tells how many dots have been counted so far
     amountFilesCounted = 0
-
-    # create folder, in which the processed files are to be stored
-    saveDir = "./processedFiles/"
-
-    # TODO: only create if dir not already exists
-    if not os.path.exists(saveDir):
-        os.mkdir(saveDir)
 
     for file in tqdm(os.listdir(folder), "Files processed"):
 
