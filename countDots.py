@@ -1,8 +1,12 @@
+from os import read
 import cv2
+from helperFunctions import readSizesFromJson
 
 # Counts the dots of the given image
+# saveImagePath: Path to where to save the image
+# jsonPath: path to file, which contains information about the sizes of dots
 # Returns amount of dots counted in image
-def countDots(file, saveImagePath = None):
+def countDots(file, saveImagePath = None, jsonPath = "sizes.json"):
 
     
     # Image read
@@ -16,7 +20,7 @@ def countDots(file, saveImagePath = None):
     # maxval – maximum value to use with the THRESH_BINARY and THRESH_BINARY_INV thresholding types.
     # type – thresholding type
 
-    th, threshedImg = cv2.threshold(denoisedImg, 200, 255,cv2.THRESH_BINARY_INV|cv2.THRESH_OTSU) # src, thresh, maxval, type
+    _, threshedImg = cv2.threshold(denoisedImg, 200, 255,cv2.THRESH_BINARY_INV|cv2.THRESH_OTSU) # src, thresh, maxval, type
 
     # Perform morphological transformations using an erosion and dilation as basic operations
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2,2))
@@ -28,9 +32,12 @@ def countDots(file, saveImagePath = None):
 
 
     ## filter by area
-    s1 = 0      # minimal size of dots
-    s2 = 80    # maximal size of dots
-    s3 = 800    # maximal size of merged dots (e.g. dots in a line)
+
+    # read the sizes for the dots from the default file
+    # if they cant be read, default values are assigned
+    s1, s2, s3 = readSizesFromJson(jsonPath)
+
+    print(s1, s2, s3)
     detectedContours = []
     multipleContours = []
     tooBigContours = []
