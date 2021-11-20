@@ -18,7 +18,7 @@ if not os.path.exists(saveDir):
     os.mkdir(saveDir)
 
 # source = input("Would you like to use a file or a folder? To use a file, type 'file'!\n")
-source = ""
+source = "file"
 
 if source == "file":    # if a file is selected
 
@@ -28,13 +28,15 @@ if source == "file":    # if a file is selected
 
     dotsCounted = 0
 
+    filename = os.path.basename(file)
+
     if file.endswith(".jpg"):
 
-        dotsCounted = countDots(file, os.path.join(saveDir, file.replace(".jpg") + "_processed.jpg"))
+        dotsCounted = countDots(file, os.path.join(saveDir, filename.replace(".jpg", "") + "_processed.jpg"))
 
     elif file.endswith(".jpeg"):
 
-            dotsCounted = countDots(file, os.path.join(saveDir, file.replace(".jpeg") + "_processed.jpg"))
+            dotsCounted = countDots(file, os.path.join(saveDir, filename.replace(".jpeg", "") + "_processed.jpg"))
 
     else:
         print("[WARNING] - File could not be processed, as it is not of type 'jpeg' or 'jpg'")
