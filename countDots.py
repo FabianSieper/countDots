@@ -67,8 +67,8 @@ def countDots(file, saveImagePath = None, sizePath = "sizes.json", colorPath = "
             # if the area is smaller than s3, it may consist of multiple dots
             if cv2.contourArea(cnt) < s3:
 
-                # calculate how many dots (of max size (s2)) could be inside of that row
-                amountDots = cv2.contourArea(cnt) / s2
+                # calculate how many dots (of average size (s1 + s2) / 2) could be inside of that row
+                amountDots = cv2.contourArea(cnt) / ((s1 + s2) / 2)
 
                 # add the contour to the list of contours as often as a dot could fit into the form
                 for _ in range(math.floor(amountDots)):

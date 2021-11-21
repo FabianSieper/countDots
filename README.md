@@ -4,16 +4,28 @@ This project aims to count a number of (by default blue) dots on a image. It was
 
 
 
+|                          Rare image                          |                       Selected points                        |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <img src="C:\Users\Siepe\OneDrive\Dokumente\Python\countDots\images\rareDots.png" alt="rareDots" style="zoom:50%;" /> | <img src="C:\Users\Siepe\OneDrive\Dokumente\Python\countDots\images\selectedDots.png" alt="selectedDots" style="zoom:50%;" /> |
+
+Dots outlined in **green** are recognized as one Dots. **Yellow** outlined dots were detected as a cluster of dots. The actual number of dots counted is determined by the area. If the area is twice as large as an average dot, two dots are counted for this.
+
+
+
 ## Installation
 
 ### Requirements
-To use this application python of version `3.9.7` (https://www.python.org/downloads/) or higher is recommenden. Addtionally the following packages are required:
+To use this application python of version `3.9.7` (https://www.python.org/downloads/) or higher is recommended. Additionally the following packages are required:
 - cv2
 - tkinter
 - tqdm
 - numpy
-To instal these packages simply copy this command into your command line:
-`pip install tk numpy opencv-python tqdm`
+
+To install these packages simply copy the following command into your command line:
+
+```
+pip install tk numpy opencv-python tqdm
+```
 
 ### Pulling the project
 To pull the project using git type the following line:
@@ -23,7 +35,7 @@ git clone https://github.com/FabianSieper/countDots
 ## Usage
 
 To run it simply run 
-`python main.py`. You are asked to select wheter you'd like to select a single file or multiple files inside of a folder (type "file" in order to select a single file). The selected file(s) are then processed, the amount of found dots displayed in the command line and an image (or multiple images) are saved under the folder `processedFiles/`. These images display which dots were found (green), which dots seem to be merged (yellow) and which areas are'nt detected as dots (red).
+`python main.py`. You are asked to select whether you'd like to select a single file or multiple files inside of a folder (type "file" in order to select a single file). The selected file(s) are then processed, the amount of found dots displayed in the command line and an image (or multiple images) are saved under the folder `processedFiles/`. These images display which dots were found (green), which dots seem to be merged (yellow) and which areas aren't detected as dots (red).
 
 ### Merged dots
 If some of the dots are to close to each other, it can appear that they are a single dot. For this, the area found is compared to the maximal set dot size. If the area is not _too_ large, the area is divided by the maximal dot-area. By this a approximate amount of dots is calculated. 
@@ -38,5 +50,4 @@ As the size of dots might differ between usages, they can be changed. For this o
 
 ### Change the color of interest
 By default only dots with the color 'blue' are minded. To change the color range, you can simply modify the values in the file `colorRange.json`. The color values are set in the hsv-color space.
-
 
