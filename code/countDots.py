@@ -29,6 +29,7 @@ def countDots(file, saveImagePath = None, sizePath = "sizes.json", colorPath = "
     # only show dots with right color
     newImg[mask > 0] = (255, 255, 255)
 
+
     rgb = cv2.cvtColor(newImg, cv2.COLOR_HSV2RGB)
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
     
