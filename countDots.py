@@ -12,6 +12,8 @@ def countDots(file, saveImagePath = None, jsonPath = "sizes.json"):
     # Image read
     img = cv2.imread(file, 0)
 
+    # possible idea from site: https://stackoverflow.com/questions/50210304/i-want-to-change-the-colors-in-image-with-python-from-specific-color-range-to-an
+    
 
     # Denoising
     # denoisedImg = cv2.fastNlMeansDenoising(img)
@@ -21,7 +23,7 @@ def countDots(file, saveImagePath = None, jsonPath = "sizes.json"):
     # maxval – maximum value to use with the THRESH_BINARY and THRESH_BINARY_INV thresholding types.
     # type – thresholding type
 
-    _, threshedImg = cv2.threshold(img, 140, 255, 1) # src, thresh, maxval, type
+    _, threshedImg = cv2.threshold(img, 160, 255, 1) # src, thresh, maxval, type
 
     # Perform morphological transformations using an erosion and dilation as basic operations
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2,2))
@@ -65,9 +67,9 @@ def countDots(file, saveImagePath = None, jsonPath = "sizes.json"):
 
                 tooBigContours.append(cnt)
 
-    cv2.drawContours(contoursImg, detectedContours, -1, (0,180,0), 2) # draw detected contours
-    cv2.drawContours(contoursImg, multipleContours, -1, (0,180,240), 2) # draw multiple contours
-    cv2.drawContours(contoursImg, tooBigContours, -1, (0,0,255), 2) # draw contours which are too big
+    cv2.drawContours(contoursImg, detectedContours, -1, (0,180,0), 3) # draw detected contours
+    cv2.drawContours(contoursImg, multipleContours, -1, (0,180,240), 3) # draw multiple contours
+    cv2.drawContours(contoursImg, tooBigContours, -1, (0,0,255), 3) # draw contours which are too big
 
     # save image
     if saveImagePath != None:
