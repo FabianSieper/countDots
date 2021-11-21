@@ -6,7 +6,7 @@ This project aims to count a number of (by default blue) dots on a image. It was
 
 |                          Rare image                          |                       Selected points                        |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <img src="\images\rareDots.png" alt="rareDots" style="zoom:50%;" /> | <img src="\images\selectedDots.png" alt="selectedDots" style="zoom:50%;" /> |
+| <img src="images\rareDots.png" alt="rareDots" style="zoom:50%;" /> | <img src="images\selectedDots.png" alt="selectedDots" style="zoom:50%;" /> |
 
 Dots outlined in **green** are recognized as one Dots. **Yellow** outlined dots were detected as a cluster of dots. The actual number of dots counted is determined by the area. If the area is twice as large as an average dot, two dots are counted for this.
 
