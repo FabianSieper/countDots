@@ -1,15 +1,19 @@
 # Count Dots
 
-This project aims to count a number of dots on a image. It was originally build for counting amounts of cells on breeding grounds in order to simplify the tasks of e.g. chemists and biologists.
+This project aims to count a number of (by default blue) dots on a image. It was originally build for counting amounts of cells on breeding grounds in order to simplify the tasks of e.g. chemists and biologists.
+
+
 
 ## Installation
 
 ### Requirements
-To use this application python of version `3.9.7`or higher is recommenden. Addtionally the following packages are required:
+To use this application python of version `3.9.7` (https://www.python.org/downloads/) or higher is recommenden. Addtionally the following packages are required:
 - cv2
 - tkinter
 - tqdm
 - numpy
+To instal these packages simply copy this command into your command line:
+`pip install tk numpy opencv-python tqdm`
 
 ### Pulling the project
 To pull the project using git type the following line:
@@ -30,3 +34,9 @@ As the size of dots might differ between usages, they can be changed. For this o
 - s1: The minimal dot size. If a dot's area is smaller than `s1`, it won't be detected.
 - s2: The maximal dot size. If a dot is between `s1` and `s2`, the dots are detected. If they are bigger than `s2`, they arent detected as single dots.
 - s3: The maximal area a collection of dots can have. If an area is bigger than `s2`, the area might represent multiple dots, laying near each other. If the area is bigger than `s2` and also _smaller_ than `s3`, the size of the area is divided by the maximal dot size `s2`. By doing so, a approximate amount of dots in this area can be calculated.
+
+
+### Change the color of interest
+By default only dots with the color 'blue' are minded. To change the color range, you can simply modify the values in the file `colorRange.json`. The color values are set in the hsv-color space.
+
+

@@ -1,32 +1,43 @@
-from os import read
 import cv2
-from helperFunctions import readSizesFromJson
+from helperFunctions import readSizesFromJson, readColorRangeFromJson
 import numpy as np
+import math
+
 # Counts the dots of the given image
 # saveImagePath: Path to where to save the image
 # jsonPath: path to file, which contains information about the sizes of dots
 # Returns amount of dots counted in image
-def countDots(file, saveImagePath = None, jsonPath = "sizes.json"):
+def countDots(file, saveImagePath = None, sizePath = "sizes.json", colorPath = "colorRange.json"):
 
     
     # Image read
-    img = cv2.imread(file, 0)
+    img = cv2.imread(file)
 
     # possible idea from site: https://stackoverflow.com/questions/50210304/i-want-to-change-the-colors-in-image-with-python-from-specific-color-range-to-an
     
+    hsv=cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # Denoising
-    # denoisedImg = cv2.fastNlMeansDenoising(img)
+    # Define lower and uppper limits of what we call "blue"
+    lower_blue, upper_blue = readColorRangeFromJson(colorPath)
 
-    # Threshold (binary image)
-    # thresh – threshold value.
-    # maxval – maximum value to use with the THRESH_BINARY and THRESH_BINARY_INV thresholding types.
-    # type – thresholding type
+    # Mask image to only select browns
+    mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
-    _, threshedImg = cv2.threshold(img, 160, 255, 1) # src, thresh, maxval, type
+    # create new blank image
+    newImg = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
+
+    # only show dots with right color
+    newImg[mask > 0] = (255, 255, 255)
+
+    rgb = cv2.cvtColor(newImg, cv2.COLOR_HSV2RGB)
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+    
+    # -----------------------
+
+    _, threshedImg = cv2.threshold(gray, 160, 255, 1) # src, thresh, maxval, type
 
     # Perform morphological transformations using an erosion and dilation as basic operations
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2,2))
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5,5))
     morphImg = cv2.morphologyEx(threshedImg, cv2.MORPH_OPEN, kernel)
 
     # Find and draw contours
@@ -38,7 +49,7 @@ def countDots(file, saveImagePath = None, jsonPath = "sizes.json"):
 
     # read the sizes for the dots from the default file
     # if they cant be read, default values are assigned
-    s1, s2, s3 = readSizesFromJson(jsonPath)
+    s1, s2, s3 = readSizesFromJson(sizePath)
 
     detectedContours = []
     multipleContours = []
@@ -60,7 +71,7 @@ def countDots(file, saveImagePath = None, jsonPath = "sizes.json"):
                 amountDots = cv2.contourArea(cnt) / s2
 
                 # add the contour to the list of contours as often as a dot could fit into the form
-                for _ in range(int(amountDots)):
+                for _ in range(math.floor(amountDots)):
                     multipleContours.append(cnt)
 
             else:
