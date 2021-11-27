@@ -3,16 +3,23 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename, askdirectory
 import os
 from tqdm import tqdm
-
-import numpy as np
+from helperFunctions import readSatIncreaseValues
 
 # hide the tk window
 Tk().withdraw() 
 
+# variable for increasement of saturation of the image
+# ... this allows for a better hit rate when it comes to the selection of dots
+# ... 
+# saturation_increase: default -> 10.0
+
+# bool variable, which describes if the image, whichs saturation got increased, shall be shown
+# show_increase_sat_image: default -> False
+
+saturation_increase, show_increase_sat_image = readSatIncreaseValues()
 
 # create folder, in which the processed files are to be stored
 saveDir = "../processedFiles/"
-
 # only create if dir not already exists
 if not os.path.exists(saveDir):
     os.mkdir(saveDir)
@@ -32,11 +39,15 @@ if source == "file":    # if a file is selected
 
     if file.endswith(".jpg"):
 
-        dotsCounted = countDots(file, os.path.join(saveDir, filename.replace(".jpg", "") + "_processed.jpg"))
+        dotsCounted = countDots(file, os.path.join(saveDir, filename.replace(".jpg", "") + "_processed.jpg"), 
+                                saturation_increase = saturation_increase,
+                                show_increase_sat_image = show_increase_sat_image)
 
     elif file.endswith(".jpeg"):
 
-            dotsCounted = countDots(file, os.path.join(saveDir, filename.replace(".jpeg", "") + "_processed.jpg"))
+            dotsCounted = countDots(file, os.path.join(saveDir, filename.replace(".jpeg", "") + "_processed.jpg"), 
+                                                        saturation_increase = saturation_increase,
+                                                        show_increase_sat_image = show_increase_sat_image)
 
     else:
         print("[WARNING] - File could not be processed, as it is not of type 'jpeg' or 'jpg'")
@@ -56,7 +67,9 @@ else:       # if a foulder is to be selected
         if file.endswith(".jpg"):
 
             # count dots of file
-            countedDots = countDots(os.path.join(folder, file), os.path.join(saveDir, file.replace(".jpg", "") + "_processed.jpg"))
+            countedDots = countDots(os.path.join(folder, file), os.path.join(saveDir, file.replace(".jpg", "") + "_processed.jpg"), 
+                                    saturation_increase = saturation_increase,
+                                    show_increase_sat_image = show_increase_sat_image) 
             amountOfDotsCounted += countedDots
 
             # one additional file processed
@@ -65,7 +78,9 @@ else:       # if a foulder is to be selected
         elif file.endswith(".jpeg"):
 
             # count dots of file
-            countedDots = countDots(os.path.join(folder, file), os.path.join(saveDir, file.replace(".jpeg", "") + "_processed.jpg"))
+            countedDots = countDots(os.path.join(folder, file), os.path.join(saveDir, file.replace(".jpeg", "") + "_processed.jpg"),
+                                    saturation_increase = saturation_increase,
+                                    show_increase_sat_image = show_increase_sat_image)
             amountOfDotsCounted += countedDots
 
             # one additional file processed

@@ -57,6 +57,34 @@ def readColorRangeFromJson(path):
 
         return lower_color, upper_color
 
+# Reads information about the saturation increasement of the image in order to detect colored dots
+# Returns 
+# ... a float which describes how much the saturation shall be increased
+# ... a boolean, which tells if the sat-increased image shall be shown
+
+def readSatIncreaseValues(path = "satIncrease.json"):
+
+    # set default values
+    saturation_increase = 10.0
+    show_increase_sat_image = False
+
+    # try to overwrite the values by reading a file
+    try:
+        file = open(path)
+        loadedJson = json.load(file)
+
+        saturation_increase = np.array(loadedJson["saturationIncrease"])
+        show_increase_sat_image = np.array(loadedJson["showImag"])
+
+    except Exception as e:
+
+        pass    # intended
+
+    finally:
+
+        return saturation_increase, show_increase_sat_image
+
+        
         
 # For testing purposes:
 if __name__ == "__main__":
