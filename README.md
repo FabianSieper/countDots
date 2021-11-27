@@ -15,7 +15,7 @@ Dots outlined in **green** are recognized as one Dots. **Yellow** outlined dots 
 ## Installation
 
 ### Requirements
-To use this application python of version `3.9.7` (https://www.python.org/downloads/) or higher is recommended. Additionally the following packages are required:
+To use this application a python of version `3.9.7` (https://www.python.org/downloads/) or higher is recommended. Additionally the following packages are required:
 - cv2
 - tkinter
 - tqdm
@@ -40,7 +40,7 @@ To run it simply run
 ### Merged dots
 If some of the dots are to close to each other, it can appear that they are a single dot. For this, the area found is compared to the maximal set dot size. If the area is not _too_ large, the area is divided by the maximal dot-area. By this a approximate amount of dots is calculated. 
 
-### Change dot size
+### Changing the dot size
 As the size of dots (measured in area, amount of pixels) might differ between cameras, they can be changed. For this open the file `code/sizes.json`and change the variables `s1, s2, s3` to your liking.
 
 - s1: The minimal dot size. If a dot's area is smaller than `s1`, it won't be counted.
@@ -48,13 +48,14 @@ As the size of dots (measured in area, amount of pixels) might differ between ca
 - s3: The maximal area a collection of dots can have. If an area is bigger than `s2`, the area might represent multiple dots, laying near each other. If the area is bigger than `s2` and also _smaller_ than `s3`, the size of the area is divided by the average dot size `(s1 + s2) / 2`. By doing so, a approximate amount of dots in this area can be calculated.
 
 
-### Change the color of interest
+### Changing the color of interest
 By default only dots with the color 'blue' are minded. To change the color range, you can simply modify the values in the file `code/colorRange.json`. The color values are set in the hsv-color space.
 
-### Change the saturation boost
+### Changing the saturation boost
 
 As some dots might not be as colorful as others, the option for boosting saturation exists. The file `code/satIncrease.json` contains two values:
 
 - `saturationIncrease`: How much shall the saturation be increased. The values `0` would describe no increase in saturation.
 - `showImag`: Describes, if the saturated image shall be shown. This can be used in order to calibrate the program.
 
+By default the saturation increase has the value `10` and no saturated increased image is shown.
