@@ -8,7 +8,7 @@ import numpy as np
 
 # This function reads a json file
 # Returns s1, s2, s3 (three sizes for the dots to be detected)
-def readSizesFromJson(path):
+def readSizesFromJson(path = "settings.json"):
 
     # s1: minimal size of dots
     # s2: maximal size of dots
@@ -24,9 +24,9 @@ def readSizesFromJson(path):
         file = open(path)
         loadedJson = json.load(file)
 
-        s1 = loadedJson["s1"]
-        s2 = loadedJson["s2"]
-        s3 = loadedJson["s3"]
+        s1 = loadedJson["sizes"]["s1"]
+        s2 = loadedJson["sizes"]["s2"]
+        s3 = loadedJson["sizes"]["s3"]
 
     except Exception as e:
 
@@ -39,7 +39,7 @@ def readSizesFromJson(path):
 
 # Reads the color range-values from a json file
 # Returns two np arrays, containing the lower color and upper color border
-def readColorRangeFromJson(path):
+def readColorRangeFromJson(path = "settings.json"):
 
     # set default values
     lower_color = np.array([45,28,0])
@@ -50,8 +50,8 @@ def readColorRangeFromJson(path):
         file = open(path)
         loadedJson = json.load(file)
 
-        lower_color = np.array(loadedJson["lowerColor"])
-        upper_color = np.array(loadedJson["upperColor"])
+        lower_color = np.array(loadedJson["color"]["lowerColor"])
+        upper_color = np.array(loadedJson["color"]["upperColor"])
 
     except Exception as e:
 
@@ -66,7 +66,7 @@ def readColorRangeFromJson(path):
 # ... a float which describes how much the saturation shall be increased
 # ... a boolean, which tells if the sat-increased image shall be shown
 
-def readSatIncreaseValues(path = "satIncrease.json"):
+def readSatIncreaseValues(path = "settings.json"):
 
     # set default values
     saturation_increase = 10.0
@@ -77,8 +77,8 @@ def readSatIncreaseValues(path = "satIncrease.json"):
         file = open(path)
         loadedJson = json.load(file)
 
-        saturation_increase = np.array(loadedJson["saturationIncrease"])
-        show_increase_sat_image = np.array(loadedJson["showImag"])
+        saturation_increase = np.array(loadedJson["saturation"]["saturationIncrease"])
+        show_increase_sat_image = np.array(loadedJson["saturation"]["showImag"])
 
     except Exception as e:
 

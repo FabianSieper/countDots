@@ -1,0 +1,17 @@
+{
+    "sizes" : {
+        "s1": 300,    
+        "s2": 3000,
+        "s3": 16000
+    },
+
+    "saturation" : {
+        "saturationIncrease": 10.0,
+        "showImag": false
+    },
+    
+    "color" : {
+        "lowerColor": [45, 28, 0],
+        "upperColor":[110, 255, 255]
+    }
+}

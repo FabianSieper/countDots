@@ -17,7 +17,7 @@ from PIL import Image, ImageEnhance
 # show_increase_sat_image: Tells whether the satration-increased image shall be shown or not
 # Returns amount of dots counted in image
 
-def countDots(file, saveImagePath = None, sizePath = "sizes.json", colorPath = "colorRange.json", saturation_increase = 10.0, show_increase_sat_image = False):
+def countDots(file, saveImagePath = None, settingsPath = "settings.json", saturation_increase = 10.0, show_increase_sat_image = False):
 
     
     # Image read
@@ -38,7 +38,7 @@ def countDots(file, saveImagePath = None, sizePath = "sizes.json", colorPath = "
     hsv=cv2.cvtColor(opencvImage, cv2.COLOR_RGB2HSV)
 
     # Define lower and uppper limits of what we call "blue"
-    lower_blue, upper_blue = readColorRangeFromJson(colorPath)
+    lower_blue, upper_blue = readColorRangeFromJson(settingsPath)
 
     # Mask image to only select browns
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
@@ -70,7 +70,7 @@ def countDots(file, saveImagePath = None, sizePath = "sizes.json", colorPath = "
 
     # read the sizes for the dots from the default file
     # if they cant be read, default values are assigned
-    s1, s2, s3 = readSizesFromJson(sizePath)
+    s1, s2, s3 = readSizesFromJson(settingsPath)
 
     detectedContours = []
     multipleContours = []
