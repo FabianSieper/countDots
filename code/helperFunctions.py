@@ -1,3 +1,7 @@
+# Author
+# Name: Fabian Sieper
+# Email: sieper.fabian@outlook.com
+
 
 import json
 import numpy as np

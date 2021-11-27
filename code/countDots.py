@@ -1,3 +1,7 @@
+# Author
+# Name: Fabian Sieper
+# Email: sieper.fabian@outlook.com
+
 import cv2
 from helperFunctions import readSizesFromJson, readColorRangeFromJson
 import numpy as np

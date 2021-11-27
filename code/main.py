@@ -1,3 +1,8 @@
+# Author
+# Name: Fabian Sieper
+# Email: sieper.fabian@outlook.com
+
+
 from countDots import countDots
 from tkinter import Tk     
 from tkinter.filedialog import askopenfilename, askdirectory
