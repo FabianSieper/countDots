@@ -1,12 +1,12 @@
 {
     "sizes" : {
         "s1": 300,    
-        "s2": 3000,
+        "s2": 4000,
         "s3": 16000
     },
 
     "saturation" : {
-        "saturationIncrease": 5.0,
+        "saturationIncrease": 10.0,
         "showImag": false
     },
     

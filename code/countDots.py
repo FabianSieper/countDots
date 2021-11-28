@@ -4,7 +4,6 @@
 
 import PIL
 import cv2
-from helperFunctions import readSizesFromJson, readColorRangeFromJson, readSatIncreaseValues, readShowFinalImage, readSaveImage
 import numpy as np
 import math
 from PIL import Image, ImageEnhance, ImageShow
@@ -16,14 +15,17 @@ import os
 # Returns amount of dots counted in image (and saves image if wanted)
 
 def countDots(  file,
-                settingsPath = "settings.json",
+                s1 = 300,
+                s2 = 3000,
+                s3 = 16000,
+                lower_color = np.array([45, 28, 0]),
+                upper_color = np.array([110, 255, 255]),
+                saturation_increase = 5.0,
+                show_increase_sat_image = False,
+                showFinalImage = False,
                 saveImage = True,
                 saveDir = "../processedFiles/",
                 overlay = 0.0):
-
-    # get information about whether the saturation should be increased, and if the
-    # manipulated image shall be shown
-    saturation_increase, show_increase_sat_image = readSatIncreaseValues(settingsPath)
 
     # Image read
     img = Image.open(file)
@@ -42,11 +44,8 @@ def countDots(  file,
 
     hsv=cv2.cvtColor(opencvImage, cv2.COLOR_RGB2HSV)
 
-    # Define lower and uppper limits of what we call "blue"
-    lower_blue, upper_blue = readColorRangeFromJson(settingsPath)
-
     # Mask image to only select browns
-    mask = cv2.inRange(hsv, lower_blue, upper_blue)
+    mask = cv2.inRange(hsv, lower_color, upper_color)
 
     # create new blank image
     newImg = np.zeros((opencvImage.shape[0], opencvImage.shape[1], 3), np.uint8)
@@ -72,11 +71,6 @@ def countDots(  file,
 
 
     ## filter by area
-
-    # read the sizes for the dots from the default file
-    # if they cant be read, default values are assigned
-    s1, s2, s3 = readSizesFromJson(settingsPath)
-
     detectedContours = []
     multipleContours = []
     tooBigContours = []
@@ -119,11 +113,11 @@ def countDots(  file,
     if overlay > 0.0:
 
         originalImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        cv2.addWeighted(contoursImg, 1.0 - overlay,
-                        originalImage, overlay, 0.0, contoursImg)
+        cv2.addWeighted(originalImage, overlay,
+                        contoursImg, 1.0 - overlay, 0.0, contoursImg)
 
     # shall the image, containing the contours, be shown?
-    if readShowFinalImage(settingsPath):
+    if showFinalImage:
 
         convertedImage = cv2.cvtColor(contoursImg, cv2.COLOR_BGR2RGB)
 

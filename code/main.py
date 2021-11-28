@@ -8,7 +8,7 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename, askdirectory
 import os
 from tqdm import tqdm
-from helperFunctions import readSaveImage, readSaveDir, readSource, readOverlayOrigImage
+from helperFunctions import readSettings
 
 # hide the tk window
 Tk().withdraw() 
@@ -16,23 +16,21 @@ Tk().withdraw()
 # Path to file, which contains the settings of the program
 settingsPath = "settings.json"
 
+settings = readSettings(settingsPath)
+
 # create folder, in which the processed files are to be stored
-saveDir = readSaveDir(settingsPath)
+saveDir = settings["saveDir"]
 
 # only create if dir not already exists
-if not os.path.exists(saveDir):
-    os.mkdir(saveDir)
+if not os.path.exists(settings["saveDir"]):
+    os.mkdir(settings["saveDir"])
 
-
-overlay = readOverlayOrigImage(settingsPath)
 
 # source = input("Would you like to use a file or a folder? To use a file, type 'file'!\n")
-source = readSource(settingsPath)
 
 # shall the final, manipulated and and marked image be saved?
-saveFinalImage = readSaveImage(settingsPath)
 
-if source == "file":    # if a file is selected
+if settings["source"] == "file":    # if a file is selected
 
     # ask for file
     print("Select a jpg- or jpeg-file")
@@ -43,10 +41,17 @@ if source == "file":    # if a file is selected
     if file.endswith(".jpg") or file.endswith(".jpeg"):
 
         dotsCounted = countDots(file = file, 
-                                settingsPath = settingsPath, 
-                                saveImage = saveFinalImage, 
-                                saveDir = saveDir,
-                                overlay = overlay)
+                                s1 = settings["s1"],
+                                s2 = settings["s2"],
+                                s3 = settings["s3"],
+                                lower_color = settings["lower_color"],
+                                upper_color = settings["upper_color"],
+                                saturation_increase = settings["saturation_increase"],
+                                show_increase_sat_image = settings["show_increase_sat_image"],
+                                showFinalImage = settings["showFinalImage"],
+                                saveImage = settings["saveImage"], 
+                                saveDir = settings["saveDir"],
+                                overlay = settings["overlay"]) 
 
     else:
         print("[WARNING] - File could not be processed, as it is not of type 'jpeg' or 'jpg'")
@@ -68,7 +73,19 @@ else:       # if a foulder is to be selected
         if file.endswith(".jpg") or file.endswith(".jpeg"):
 
             # count dots of file
-            countedDots = countDots(os.path.join(folder, file), settingsPath, saveImage = saveFinalImage, saveDir = saveDir) 
+            countedDots = countDots(os.path.join(folder, file), 
+                                    s1 = settings["s1"],
+                                    s2 = settings["s2"],
+                                    s3 = settings["s3"],
+                                    lower_color = settings["lower_color"],
+                                    upper_color = settings["upper_color"],
+                                    saturation_increase = settings["saturation_increase"],
+                                    show_increase_sat_image = settings["show_increase_sat_image"],
+                                    showFinalImage = settings["showFinalImage"],
+                                    saveImage = settings["saveImage"], 
+                                    saveDir = settings["saveDir"],
+                                    overlay = settings["overlay"]) 
+
             amountOfDotsCounted += countedDots
 
             # one additional file processed
