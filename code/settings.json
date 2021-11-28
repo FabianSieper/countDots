@@ -5,18 +5,18 @@
         "s3": 16000
     },
 
-    "saturation" : {
+    "saturation": {
         "saturationIncrease": 10.0,
         "showImag": false
     },
     
     "color" : {
         "lowerColor": [45, 28, 0],
-        "upperColor":[110, 255, 255]
+        "upperColor": [110, 255, 255]
     },
     "source": "file",       
-    "showFinalImage" : true,
-    "overlayOriginalImage" : 0.8,
-    "saveImage" : true,
-    "saveDir" : "../processedFiles/"    
+    "showFinalImage": true,
+    "overlayOriginalImage": 0.8,
+    "saveImage": true,
+    "saveDir": "../processedFiles/"    
 }

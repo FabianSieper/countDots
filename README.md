@@ -45,34 +45,36 @@ If some of the dots are to close to each other, it can appear that they are a si
 All settings can be found in the file `code/settings.json`.
 
 ### Dot size
-As the size of dots (measured in area, amount of pixels) might differ between cameras, they can be changed. For this adjust the variables `s1, s2, s3` to your liking.
+As the size of dots (measured in area, amount of pixels) might differ between cameras, they can be changed. For this adjust the variables _s1, s2, s3_ to your liking.
 
-- s1: The minimal dot size. If a dot's area is smaller than `s1`, it won't be counted.
-- s2: The maximal dot size. If a dot is between `s1` and `s2`, the dots are detected. If they are bigger than `s2`, they aren't detected as single but as multiple dots.
-- s3: The maximal area a collection of dots can have. If an area is bigger than `s2`, the area might represent multiple dots, laying near each other. If the area is bigger than `s2` and also _smaller_ than `s3`, the size of the area is divided by the average dot size `(s1 + s2) / 2`. By doing so, a approximate amount of dots in this area can be calculated.
+- `s1`: The minimal dot size. If a dot's area is smaller than _s1_, it won't be counted.
+- `s2`: The maximal dot size. If a dot is between _s1_ and _s2_, the dots are detected. If they are bigger than _s2_, they aren't detected as single but as multiple dots.
+- `s3`: The maximal area a collection of dots can have. If an area is bigger than _s2_, the area might represent multiple dots, laying near each other. If the area is bigger than _s2_ and also _smaller_ than _s3_, the size of the area is divided by the average dot size _(s1 + s2) / 2_. By doing so, a approximate amount of dots in this area can be calculated.
 
 
 ### Color of interest
 By default only dots with the color _blue_ are minded. To change the color range, you can simply modify the values `lowerColor` and `upperColor` in the settings. The color values are set in the hsv-color space. Thus the values have to be:
 
 ```
-Color = (Hue, Saturation, Value)
+Color = [Hue, Saturation, Value]
 ```
 
 with the max values being
 
 ```
-Color = (180, 360, 360)
+Color = [180, 360, 360]
 ```
+
+If you transfer color-codes from other applications or websites, keep in mind the scale them accordingly.
 
 ### Saturation boost
 
 As some dots might not be as colorful as others, the option for boosting saturation exists. 
 
-- `saturationIncrease`: How much shall the saturation be increased. The values `0` would describe no increase in saturation.
+- `saturationIncrease`: How much shall the saturation be increased. The values _0_ would describe no increase in saturation.
 - `showImag`: Describes, if the saturated image shall be shown. This can be used in order to calibrate the program.
 
-By default the saturation increase has the value `10` and no saturated increased image is shown.
+By default the saturation increase has the value _10_ and no saturated increased image is shown.
 
 ### Source
 
