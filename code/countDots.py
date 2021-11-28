@@ -35,7 +35,25 @@ def countDots(  file,
     pushed_img = converter.enhance(saturation_increase)
 
     if show_increase_sat_image:
-        pushed_img.show()
+
+        convertedImage = cv2.cvtColor(cv2.cvtColor(np.array(pushed_img), cv2.COLOR_RGB2BGR), cv2.COLOR_BGR2RGB)
+
+        fontColor = (209, 80, 0, 255)
+        fontStroke = 3
+
+        # write the name of file onto the image
+        cv2.putText(convertedImage, 
+                    os.path.basename(file), 
+                    (50, 200), 
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    5,   # font size
+                    fontColor,
+                    fontStroke) 
+
+        pil_img = Image.fromarray(convertedImage)
+
+        ImageShow.show(pil_img)
+
 
     # convert image to cv2 image
     opencvImage = np.array(pushed_img)
