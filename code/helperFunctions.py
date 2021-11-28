@@ -77,8 +77,8 @@ def readSatIncreaseValues(path = "settings.json"):
         file = open(path)
         loadedJson = json.load(file)
 
-        saturation_increase = np.array(loadedJson["saturation"]["saturationIncrease"])
-        show_increase_sat_image = np.array(loadedJson["saturation"]["showImag"])
+        saturation_increase = loadedJson["saturation"]["saturationIncrease"]
+        show_increase_sat_image = loadedJson["saturation"]["showImag"]
 
     except Exception as e:
 
@@ -89,7 +89,113 @@ def readSatIncreaseValues(path = "settings.json"):
         return saturation_increase, show_increase_sat_image
 
         
-        
+# Reads information from settings-file whether the final image, which has the counted dots marked,
+# shall be shown
+def readShowFinalImage(path = "settings.json"):
+
+    # set default value
+    showFinalImage = False 
+
+    # try to overwrite the values by reading a file
+    try:
+        file = open(path)
+        loadedJson = json.load(file)
+
+        showFinalImage = loadedJson["showFinalImage"]
+
+    except Exception as e:
+
+        pass    # intended
+
+    finally:
+
+        return showFinalImage
+
+
+# Reads information whether the manipulated image shall be saved
+def readSaveImage(path = "settings.json"):
+
+    # set default value
+    saveImage = True 
+
+    # try to overwrite the values by reading a file
+    try:
+        file = open(path)
+        loadedJson = json.load(file)
+
+        saveImage = loadedJson["saveImage"]
+
+    except Exception as e:
+
+        pass    # intended
+
+    finally:
+
+        return saveImage
+
+# Gets folder-path, in which the images shall be stored
+def readSaveDir(path = "settings.json"):
+
+    # set default value
+    saveDir = "../processedFiles/" 
+
+    # try to overwrite the values by reading a file
+    try:
+        file = open(path)
+        loadedJson = json.load(file)
+
+        saveDir = loadedJson["saveDir"]
+
+    except Exception as e:
+
+        pass    # intended
+
+    finally:
+
+        return saveDir
+
+# How transparant shall the original image be, which is overlaye over the edited, final image?
+# If the value is 0, the original image does simply not get layed over the edited one
+def readOverlayOrigImage(path = "settings.json"):
+
+    # set default value
+    overlayOrigImage = 0.0
+
+    # try to overwrite the values by reading a file
+    try:
+        file = open(path)
+        loadedJson = json.load(file)
+
+        overlayOrigImage = loadedJson["overlayOriginalImage"]
+
+    except Exception as e:
+
+        pass    # intended
+
+    finally:
+
+        return overlayOrigImage
+
+def readSource(path = "settings.json"):
+
+    # set default value
+    source = "file"
+
+    # try to overwrite the values by reading a file
+    try:
+        file = open(path)
+        loadedJson = json.load(file)
+
+        source = loadedJson["source"]
+
+    except Exception as e:
+
+        pass    # intended
+
+    finally:
+
+        return source
+
 # For testing purposes:
 if __name__ == "__main__":
 

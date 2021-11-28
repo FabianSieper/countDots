@@ -6,12 +6,17 @@
     },
 
     "saturation" : {
-        "saturationIncrease": 10.0,
+        "saturationIncrease": 5.0,
         "showImag": false
     },
     
     "color" : {
         "lowerColor": [45, 28, 0],
         "upperColor":[110, 255, 255]
-    }
+    },
+    "source": "file",
+    "showFinalImage" : true,
+    "saveImage" : true,
+    "saveDir" : "../processedFiles/",
+    "overlayOriginalImage" : 0.8
 }
