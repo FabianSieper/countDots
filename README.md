@@ -4,7 +4,7 @@ This project aims to count a number of (by default blue) dots on a image. It was
 
 
 
-|                          Rare image                          |                       Selected points                        |
+|                          Raw image                           |                       Selected points                        |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | <img src="images\rawDots.png" alt="rareDots" style="zoom:50%;" /> | <img src="images\selectedDots.png" alt="selectedDots" style="zoom:50%;" /> |
 
