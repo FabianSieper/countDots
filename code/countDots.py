@@ -10,45 +10,39 @@ from PIL import Image, ImageEnhance, ImageShow
 import os
 
 # Counts the dots of the given image
-# saveImagesettingsPathPath: Path to file, which contains settings of the program
-#
+# settings: Dict of settings required 
 # Returns amount of dots counted in image (and saves image if wanted)
 
 def countDots(  file,
-                s1 = 300,
-                s2 = 3000,
-                s3 = 16000,
-                lower_color = np.array([45, 28, 0]),
-                upper_color = np.array([110, 255, 255]),
-                saturation_increase = 5.0,
-                show_increase_sat_image = False,
-                showFinalImage = False,
-                saveImage = True,
-                saveDir = "../processedFiles/",
-                overlay = 0.0):
+                settings = {"s1" : 0, "s2" : 80, "s3" : 100, 
+                            "lower_color" : np.array([45,28,0]), "upper_color" : np.array([110,255,255]),
+                            "saturation_increase" : 10.0, "show_increase_sat_image" : False,
+                            "showFinalImage" : False,
+                            "saveImage" : True,
+                            "saveDir" : "../processedFiles/" ,
+                            "overlay" : 0.0,
+                            "source" : "file"}):
 
     # Image read
     img = Image.open(file)
 
     # increase saturation
     converter = ImageEnhance.Color(img.copy())
-    pushed_img = converter.enhance(saturation_increase)
+    pushed_img = converter.enhance(settings["saturation_increase"])
 
-    if show_increase_sat_image:
+    if settings["show_increase_sat_image"]:
 
         convertedImage = cv2.cvtColor(cv2.cvtColor(np.array(pushed_img), cv2.COLOR_RGB2BGR), cv2.COLOR_BGR2RGB)
 
-        fontColor = (209, 80, 0, 255)
-        fontStroke = 3
-
-        # write the name of file onto the image
-        cv2.putText(convertedImage, 
-                    os.path.basename(file), 
-                    (50, 200), 
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    5,   # font size
-                    fontColor,
-                    fontStroke) 
+        if settings["showTextOnImage_text"]:
+            # write the name of file onto the image
+            cv2.putText(convertedImage, 
+                        os.path.basename(file), 
+                        settings["position_text"], 
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        settings["fontsize_text"],  
+                        settings["color_text"],
+                        settings["lineWidth_text"]) 
 
         pil_img = Image.fromarray(convertedImage)
 
@@ -63,7 +57,7 @@ def countDots(  file,
     hsv=cv2.cvtColor(opencvImage, cv2.COLOR_RGB2HSV)
 
     # Mask image to only select browns
-    mask = cv2.inRange(hsv, lower_color, upper_color)
+    mask = cv2.inRange(hsv, settings["lower_color"], settings["upper_color"])
 
     # create new blank image
     newImg = np.zeros((opencvImage.shape[0], opencvImage.shape[1], 3), np.uint8)
@@ -96,17 +90,17 @@ def countDots(  file,
     for cnt in contours:
 
         # if the area is the right size to be a dot
-        if s1 < cv2.contourArea(cnt) < s2:
+        if settings["s1"] < cv2.contourArea(cnt) < settings["s2"]:
             detectedContours.append(cnt)
 
         # if the area is too big to be a dot
-        elif s2 < cv2.contourArea(cnt):
+        elif settings["s2"] < cv2.contourArea(cnt):
 
             # if the area is smaller than s3, it may consist of multiple dots
-            if cv2.contourArea(cnt) < s3:
+            if cv2.contourArea(cnt) < settings["s3"]:
 
                 # calculate how many dots (of average size (s1 + s2) / 2) could be inside of that row
-                amountDots = cv2.contourArea(cnt) / ((s1 + s2) / 2)
+                amountDots = cv2.contourArea(cnt) / ((settings["s1"] + settings["s2"]) / 2)
 
                 # if amount dots < 1.5, it gets floored, thus only counted as 1 point
                 # in this case apend the single dot to the list of single dots
@@ -128,36 +122,38 @@ def countDots(  file,
     countedDots = len(detectedContours) + len(multipleContours)
 
     # if the original image and the final image shall be overlayed
-    if overlay > 0.0:
+    if settings["overlay"] > 0.0:
 
         originalImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        cv2.addWeighted(originalImage, overlay,
-                        contoursImg, 1.0 - overlay, 0.0, contoursImg)
+        cv2.addWeighted(originalImage, settings["overlay"],
+                        contoursImg, 1.0 - settings["overlay"], 0.0, contoursImg)
 
-    # shall the image, containing the contours, be shown?
-    if showFinalImage:
 
-        convertedImage = cv2.cvtColor(contoursImg, cv2.COLOR_BGR2RGB)
+    # convert image to other color space in order to apply 
+    convertedImage = cv2.cvtColor(contoursImg, cv2.COLOR_BGR2RGB)
 
-        fontColor = (209, 80, 0, 255)
-        fontStroke = 3
+    if settings["showCountOnImage_count"]:
         # write the amount of counted dots onto the image
         cv2.putText(convertedImage, 
                     str(countedDots), 
-                    (50, 460), 
+                    settings["position_count"], 
                     cv2.FONT_HERSHEY_SIMPLEX,
-                    10,   # font size
-                    fontColor, 
-                    fontStroke) 
+                    settings["fontsize_count"], 
+                    settings["color_count"], 
+                    settings["lineWidth_count"]) 
 
+    if settings["showTextOnImage_text"]:
         # write the name of file onto the image
         cv2.putText(convertedImage, 
                     os.path.basename(file), 
-                    (50, 200), 
+                    settings["position_text"], 
                     cv2.FONT_HERSHEY_SIMPLEX,
-                    5,   # font size
-                    fontColor,
-                    fontStroke) 
+                    settings["fontsize_text"],  
+                    settings["color_text"],
+                    settings["lineWidth_text"])
+                    
+    # shall the image, containing the contours, be shown?
+    if settings["showFinalImage"]:
 
         pil_img = Image.fromarray(convertedImage)
 
@@ -166,7 +162,7 @@ def countDots(  file,
 
 
     # save image
-    if saveImage:
+    if settings["saveImage"]:
 
         # compute image path name
         basename = os.path.basename(file)
@@ -174,7 +170,10 @@ def countDots(  file,
 
         bareBaseName = basename.replace(ending, "")
 
-        saveImagePath = os.path.join(saveDir, bareBaseName + "_dotsCounted-" + str(countedDots) + ".jpg")
+        saveImagePath = os.path.join(settings["saveDir"], bareBaseName + "_dotsCounted-" + str(countedDots) + ".jpg")
+
+        # convert color space back to what cv2 is used to
+        contoursImg = cv2.cvtColor(convertedImage, cv2.COLOR_RGB2BGR)
         cv2.imwrite(saveImagePath, contoursImg)
 
 

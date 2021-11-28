@@ -95,3 +95,25 @@ If you'd like to save the image, set the parameter `saveImage` to _true_. This a
 ### Save directory
 
 To change the folder where the final images will be saved, adjust the parameter `saveDir`. This parameter has to contain a path to a folder. By default the images are saved inside the folder _processedFiles/_, which again lies inside the project folder.
+
+### Description on Images
+
+#### Counts
+
+If you'd like to display the amount of dots counted on an image, you can enter the section `countedDotsToImage` inside of the settings-file. These parameter all belong to the text for displaying the amount of dots counted on an image.
+
+- `show`: Shall the text be shown?
+- `lineWidth`: How thick shall the text be?
+- `color`: Which color shall the text be in?
+- `position`: At which position shall the text be? _[x, y]_
+- `fontSize`: How big shall the text be?
+
+### Name of Image
+
+If you'd like to display the name of an file on the image itself, you can enter the section `fileNameToImage` inside of the settings-file. These parameter all belong to the text for displaying the name of a file.
+
+- `show`: Shall the text be shown?
+- `lineWidth`: How thick shall the text be?
+- `color`: Which color shall the text be in?
+- `position`: At which position shall the text be? _[x, y]_
+- `fontSize`: How big shall the text be?

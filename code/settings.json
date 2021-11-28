@@ -14,9 +14,31 @@
         "lowerColor": [45, 28, 0],
         "upperColor": [110, 255, 255]
     },
+
     "source": "file",       
+
     "showFinalImage": true,
+
     "overlayOriginalImage": 0.8,
+
     "saveImage": true,
-    "saveDir": "../processedFiles/"    
+
+    "saveDir": "../processedFiles/",
+
+    "countedDotsToImage": {
+        "show" : true,
+        "lineWidth" : 3,
+        "color" : [209, 80, 0, 255],
+        "position" : [50, 460],
+        "fontSize" : 10
+    },
+
+    "fileNameToImage" : {
+        "show" : false,
+        "lineWidth" : 3,
+        "color" : [209, 80, 0, 255],
+        "position" : [50, 200],
+        "fontSize" : 5
+
+    }
 }

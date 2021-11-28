@@ -41,17 +41,7 @@ if settings["source"] == "file":    # if a file is selected
     if file.endswith(".jpg") or file.endswith(".jpeg"):
 
         dotsCounted = countDots(file = file, 
-                                s1 = settings["s1"],
-                                s2 = settings["s2"],
-                                s3 = settings["s3"],
-                                lower_color = settings["lower_color"],
-                                upper_color = settings["upper_color"],
-                                saturation_increase = settings["saturation_increase"],
-                                show_increase_sat_image = settings["show_increase_sat_image"],
-                                showFinalImage = settings["showFinalImage"],
-                                saveImage = settings["saveImage"], 
-                                saveDir = settings["saveDir"],
-                                overlay = settings["overlay"]) 
+                                settings = settings) 
 
     else:
         print("[WARNING] - File could not be processed, as it is not of type 'jpeg' or 'jpg'")
@@ -74,17 +64,7 @@ else:       # if a foulder is to be selected
 
             # count dots of file
             countedDots = countDots(os.path.join(folder, file), 
-                                    s1 = settings["s1"],
-                                    s2 = settings["s2"],
-                                    s3 = settings["s3"],
-                                    lower_color = settings["lower_color"],
-                                    upper_color = settings["upper_color"],
-                                    saturation_increase = settings["saturation_increase"],
-                                    show_increase_sat_image = settings["show_increase_sat_image"],
-                                    showFinalImage = settings["showFinalImage"],
-                                    saveImage = settings["saveImage"], 
-                                    saveDir = settings["saveDir"],
-                                    overlay = settings["overlay"]) 
+                                    settings = settings) 
 
             amountOfDotsCounted += countedDots
 
