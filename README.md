@@ -80,7 +80,7 @@ If you'd like to compute multiple files at once, you can place all your files in
 
 ### Show final image
 
-To automatically view the final image, which contains marked dots, set the parameter `showFinalImage` to _true_. By default the value _false_ is set.
+To automatically view the final image, which contains marked dots, set the parameter `showFinalImage` to _true_. By default the value _false_ is set. However, it should be kept in mind, that showing the image at the end lowers the performance of the program. 
 
 ### Overlay original image
 
