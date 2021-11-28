@@ -14,9 +14,9 @@
         "lowerColor": [45, 28, 0],
         "upperColor":[110, 255, 255]
     },
-    "source": "file",
+    "source": "file",       
     "showFinalImage" : true,
+    "overlayOriginalImage" : 0.8,
     "saveImage" : true,
-    "saveDir" : "../processedFiles/",
-    "overlayOriginalImage" : 0.8
+    "saveDir" : "../processedFiles/"    
 }
