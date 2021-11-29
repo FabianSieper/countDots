@@ -206,6 +206,8 @@ def countDots(  file,
 
         saveImagePath = os.path.join(settings["saveDir"], bareBaseName + "_dotsCounted-" + str(countedDots) + ".jpg")
 
+        # cange color space to original
+        contoursImg = cv2.cvtColor(contoursImg, cv2.COLOR_BGR2RGB)
         # convert color space back to what cv2 is used to
         cv2.imwrite(saveImagePath, contoursImg)
 

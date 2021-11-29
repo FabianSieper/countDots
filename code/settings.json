@@ -16,8 +16,8 @@
     },
     
     "color" : {
-        "lowerColor": [45, 28, 40],
-        "upperColor": [125, 255, 255]
+        "lowerColor": [45, 10, 40],
+        "upperColor": [170, 255, 255]
     },
 
     "source": "file",       
