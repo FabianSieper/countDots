@@ -5,8 +5,18 @@
 
 import json
 import numpy as np
-from numpy.lib.npyio import load
+import cv2
+import traceback
 
+def addTextToImage(image, text, text_position, text_size, text_color, lineWidth):
+
+    cv2.putText(image, 
+        text, 
+        text_position, 
+        cv2.FONT_HERSHEY_SIMPLEX,
+        text_size,  
+        text_color,
+        lineWidth) 
 
 # Takes a path to a json file, which contains settings
 # Returns a dict with all read settings
@@ -26,6 +36,9 @@ def readSettings(path = "settings.json"):
 
     saturation_increase = 10.0
     show_increase_sat_image = False
+
+    contrast_increase = 1.0
+    show_increase_contr_image = False
 
     showFinalImage = False 
 
@@ -63,7 +76,10 @@ def readSettings(path = "settings.json"):
         upper_color = np.array(loadedJson["color"]["upperColor"])
 
         saturation_increase = loadedJson["saturation"]["saturationIncrease"]
-        show_increase_sat_image = loadedJson["saturation"]["showImag"]
+        show_increase_sat_image = loadedJson["saturation"]["showImage"]
+
+        contrast_increase = loadedJson["contrast"]["contrastIncrease"]
+        show_increase_contr_image = loadedJson["contrast"]["showImage"]
 
         showFinalImage = loadedJson["showFinalImage"]
 
@@ -89,16 +105,15 @@ def readSettings(path = "settings.json"):
 
     except Exception as e:
         
-        print("[WARNING] - Not able to read settings. Default settings are used ... ")
-        print(e.with_traceback())
-
-        pass    # intended
+        print("[WARNING] - Not able to read settings. Default settings are used ...\nDoes the file exist, or does it maybe have some spelling errors inside of it? ")
+        print(traceback.format_exc())
 
     finally:
 
         return {"s1" : s1, "s2" : s2, "s3" : s3, 
                 "lower_color" : lower_color, "upper_color" : upper_color,
                 "saturation_increase" : saturation_increase, "show_increase_sat_image" : show_increase_sat_image,
+                "contrast_increase" : contrast_increase, "show_increased_contr_image" : show_increase_contr_image,
                 "showFinalImage" : showFinalImage,
                 "saveImage" : saveImage,
                 "saveDir" : saveDir,

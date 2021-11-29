@@ -1,6 +1,6 @@
 # Count Dots
 
-This project aims to count a number of (by default blue) dots on a image. It was originally build for counting amounts of cells on breeding grounds in order to simplify the tasks of e.g. chemists and biologists.
+This project aims to count a number of (by default blue) dots on an image. It was originally built for counting amounts of cells on breeding grounds in order to simplify the tasks of e.g. chemists and biologists.
 
 
 
@@ -15,7 +15,7 @@ Dots outlined in **green** are recognized as one Dots. **Yellow** outlined dots 
 # Installation
 
 ### Requirements
-To use this application a python of version `3.9.7` (https://www.python.org/downloads/) or higher is recommended. Additionally the following packages are required:
+To use this application a python of version `3.9.7` (https://www.python.org/downloads/) or higher is recommended. Additionally, the following packages are required:
 - cv2
 - tkinter
 - tqdm
@@ -35,10 +35,17 @@ git clone https://github.com/FabianSieper/countDots
 # Usage
 
 To run it simply run 
-`python main.py`. You are asked to select whether you'd like to select a single file or multiple files inside of a folder (type "file" in order to select a single file). The selected file(s) are then processed, the amount of found dots displayed in the command line and an image (or multiple images) are saved under the folder `processedFiles/`. These images display which dots were found (green), which dots seem to be merged (yellow) and which areas aren't detected as dots (red).
+
+```
+python main.py
+```
+
+or double click the file _main.py_. This requires python to be selected as the default application for files with the ending _.py_.
+
+You are asked to select whether you'd like to select a single file or multiple files inside of a folder (type "file" to select a single file). The selected file(s) are then processed, the amount of found dots displayed in the command line and an image (or multiple images) are saved under the folder `processedFiles/`. These images display which dots were found (green), which dots seem to be merged (yellow) and which areas aren't detected as dots (red).
 
 ### Merged dots
-If some of the dots are to close to each other, it can appear that they are a single dot. For this, the area found is compared to the maximal set dot size. If the area is not _too_ large, the area is divided by the maximal dot-area. By this a approximate amount of dots is calculated. 
+If some of the dots are too close to each other, it can appear that they are a single dot. For this, the area found is compared to the maximal set dot size. If the area is not _too_ large, the area is divided by the maximal dot-area. By this, an approximate amount of dots is calculated. 
 
 ## Settings
 
@@ -49,7 +56,7 @@ As the size of dots (measured in area, amount of pixels) might differ between ca
 
 - `s1`: The minimal dot size. If a dot's area is smaller than _s1_, it won't be counted.
 - `s2`: The maximal dot size. If a dot is between _s1_ and _s2_, the dots are detected. If they are bigger than _s2_, they aren't detected as single but as multiple dots.
-- `s3`: The maximal area a collection of dots can have. If an area is bigger than _s2_, the area might represent multiple dots, laying near each other. If the area is bigger than _s2_ and also _smaller_ than _s3_, the size of the area is divided by the average dot size _(s1 + s2) / 2_. By doing so, a approximate amount of dots in this area can be calculated.
+- `s3`: The maximal area a collection of dots can have. If an area is bigger than _s2_, the area might represent multiple dots, laying near each other. If the area is bigger than _s2_ and also _smaller_ than _s3_, the size of the area is divided by the average dot size _(s1 + s2) / 2_. By doing so, an approximate amount of dots in this area can be calculated.
 
 
 ### Color of interest
@@ -65,28 +72,40 @@ with the max values being
 Color = [180, 360, 360]
 ```
 
-If you transfer color-codes from other applications or websites, keep in mind the scale them accordingly.
+If you transfer color codes from other applications or websites, keep in mind the scale them accordingly.
+
+### Contrast boost
+
+If the image is washed out, or the dots might not be as distinguishable from each other, you can increase the contrast of the image. Settings regarding the contrast can be found underneath the parameter `contrast`.
+
+- `contrastIncrease`: A number describing how much the contrast shall be increased. 
+  - _<1_ describes a reduction in contrast
+  - _=1_ has no effect on the contrast - it stays the same
+  - _>1_ increases the contrast
+- `showImage`: Describes, if the saturated image shall be shown. This option can be used in order to calibrate the program.
+
+By default the saturation increase has the value _1_ and no image regarding the contrast is shown.
 
 ### Saturation boost
 
-As some dots might not be as colorful as others, the option for boosting saturation exists. 
+As some dots might not be as colorful as others, the option for boosting saturation exists. Settings regarding the saturation can be found underneath the parameter `saturation`. This option builds up on the settings _contrast_. At first the contrast is applied.
 
 - `saturationIncrease`: How much shall the saturation be increased. The values _0_ would describe no increase in saturation.
-- `showImag`: Describes, if the saturated image shall be shown. This can be used in order to calibrate the program.
+  - `showImage`: Describes, if the saturated image shall be shown. This option can be used to calibrate the program.
 
-By default the saturation increase has the value _10_ and no saturated increased image is shown.
+By default, the saturation increase has the value _10_ and no saturated increased image is shown.
 
 ### Source
 
-If you'd like to compute multiple files at once, you can place all your files inside of one folder. All files inside of this folder will be processed. For this, change the parameter `source` to _folder_. By default only one file can be selected.
+If you'd like to compute multiple files at once, you can place all your files inside of one folder. All files inside of this folder will be processed. For this, change the parameter `source` to _folder_. By default, only one file can be selected.
 
 ### Show final image
 
-To automatically view the final image, which contains marked dots, set the parameter `showFinalImage` to _true_. By default the value _false_ is set. However, it should be kept in mind, that showing the image at the end lowers the performance of the program. 
+To automatically view the final image, which contains marked dots, set the parameter `showFinalImage` to _true_. By default, the value _false_ is set. However, it should be kept in mind, that showing the image at the end lowers the performance of the program. 
 
 ### Overlay original image
 
-In addition to _Show final image_ it is also possible to overlay the original image with the image containing the marked dots. To enable this adjust the parameter `overlayOriginalImage`. The possible values range between _0.0_ and _1.0_, where 0.0 describes full transparency of the original image and 1.0 no transparency. A value of _0.8_ is recommended if wanted. By default the value is _0.0_.
+In addition to _Show final image_ it is also possible to overlay the original image with the image containing the marked dots. To enable this adjust the parameter `overlayOriginalImage`. The possible values range between _0.0_ and _1.0_, where 0.0 describes full transparency of the original image and 1.0 no transparency. A value of _0.8_ is recommended if wanted. By default, the value is _0.0_.
 
 ### Save the image
 
@@ -94,13 +113,13 @@ If you'd like to save the image, set the parameter `saveImage` to _true_. This a
 
 ### Save directory
 
-To change the folder where the final images will be saved, adjust the parameter `saveDir`. This parameter has to contain a path to a folder. By default the images are saved inside the folder _processedFiles/_, which again lies inside the project folder.
+To change the folder where the final images will be saved, adjust the parameter `saveDir`. This parameter has to contain a path to a folder. By default, the images are saved inside the folder _processedFiles/_, which again lies inside the project folder.
 
-### Description on Images
+### Write Description on Image
 
 #### Counts
 
-If you'd like to display the amount of dots counted on an image, you can enter the section `countedDotsToImage` inside of the settings-file. These parameter all belong to the text for displaying the amount of dots counted on an image.
+If you'd like to display the amount of dots counted on an image, you can enter the section `countedDotsToImage` inside of the settings-file. These parameters all belong to the text for displaying the amount of dots counted on an image.
 
 - `show`: Shall the text be shown?
 - `lineWidth`: How thick shall the text be?
@@ -110,7 +129,7 @@ If you'd like to display the amount of dots counted on an image, you can enter t
 
 ### Name of Image
 
-If you'd like to display the name of an file on the image itself, you can enter the section `fileNameToImage` inside of the settings-file. These parameter all belong to the text for displaying the name of a file.
+If you'd like to display the name of a file on the image itself, you can enter the section `fileNameToImage` inside of the settings-file. These parameters all belong to the text for displaying the name of a file.
 
 - `show`: Shall the text be shown?
 - `lineWidth`: How thick shall the text be?

@@ -7,7 +7,12 @@
 
     "saturation": {
         "saturationIncrease": 10.0,
-        "showImag": false
+        "showImage": false
+    },
+
+    "contrast": {
+        "contrastIncrease": 2,
+        "showImage": false
     },
     
     "color" : {
@@ -34,7 +39,7 @@
     },
 
     "fileNameToImage" : {
-        "show" : false,
+        "show" : true,
         "lineWidth" : 3,
         "color" : [209, 80, 0, 255],
         "position" : [50, 200],

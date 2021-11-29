@@ -8,6 +8,7 @@ import numpy as np
 import math
 from PIL import Image, ImageEnhance, ImageShow
 import os
+from helperFunctions import addTextToImage
 
 # Counts the dots of the given image
 # settings: Dict of settings required 
@@ -17,6 +18,7 @@ def countDots(  file,
                 settings = {"s1" : 0, "s2" : 80, "s3" : 100, 
                             "lower_color" : np.array([45,28,0]), "upper_color" : np.array([110,255,255]),
                             "saturation_increase" : 10.0, "show_increase_sat_image" : False,
+                            "contrast_increase" : 1, "show_increased_contr_image" : False,
                             "showFinalImage" : False,
                             "saveImage" : True,
                             "saveDir" : "../processedFiles/" ,
@@ -26,23 +28,44 @@ def countDots(  file,
     # Image read
     img = Image.open(file)
 
+    # incrase contrast
+    contrast_converter = ImageEnhance.Contrast(img.copy())
+    contr_img = contrast_converter.enhance(settings["contrast_increase"])
+
+    if settings["show_increased_contr_image"]:
+
+        convertedImage = cv2.cvtColor(cv2.cvtColor(np.array(contr_img), cv2.COLOR_RGB2BGR), cv2.COLOR_BGR2RGB)
+
+        if settings["showTextOnImage_text"]:
+
+            addTextToImage(convertedImage, 
+                        os.path.basename(file), 
+                        settings["position_text"], 
+                        settings["fontsize_text"], 
+                        settings["color_text"],
+                        settings["lineWidth_text"])
+
+
+        pil_img = Image.fromarray(convertedImage)
+
+        ImageShow.show(pil_img)
+
     # increase saturation
-    converter = ImageEnhance.Color(img.copy())
-    pushed_img = converter.enhance(settings["saturation_increase"])
+    saturation_converter = ImageEnhance.Color(contr_img.copy())
+    pushed_img = saturation_converter.enhance(settings["saturation_increase"])
 
     if settings["show_increase_sat_image"]:
 
         convertedImage = cv2.cvtColor(cv2.cvtColor(np.array(pushed_img), cv2.COLOR_RGB2BGR), cv2.COLOR_BGR2RGB)
 
         if settings["showTextOnImage_text"]:
-            # write the name of file onto the image
-            cv2.putText(convertedImage, 
-                        os.path.basename(file), 
-                        settings["position_text"], 
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        settings["fontsize_text"],  
-                        settings["color_text"],
-                        settings["lineWidth_text"]) 
+
+            addTextToImage(convertedImage, 
+                                os.path.basename(file), 
+                                settings["position_text"], 
+                                settings["fontsize_text"], 
+                                settings["color_text"],
+                                settings["lineWidth_text"])
 
         pil_img = Image.fromarray(convertedImage)
 
@@ -133,24 +156,22 @@ def countDots(  file,
     convertedImage = cv2.cvtColor(contoursImg, cv2.COLOR_BGR2RGB)
 
     if settings["showCountOnImage_count"]:
-        # write the amount of counted dots onto the image
-        cv2.putText(convertedImage, 
+
+        addTextToImage(convertedImage, 
                     str(countedDots), 
                     settings["position_count"], 
-                    cv2.FONT_HERSHEY_SIMPLEX,
                     settings["fontsize_count"], 
-                    settings["color_count"], 
-                    settings["lineWidth_count"]) 
+                    settings["color_count"],
+                    settings["lineWidth_count"])
 
     if settings["showTextOnImage_text"]:
-        # write the name of file onto the image
-        cv2.putText(convertedImage, 
-                    os.path.basename(file), 
-                    settings["position_text"], 
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    settings["fontsize_text"],  
-                    settings["color_text"],
-                    settings["lineWidth_text"])
+
+            addTextToImage(convertedImage, 
+                os.path.basename(file), 
+                settings["position_text"], 
+                settings["fontsize_text"], 
+                settings["color_text"],
+                settings["lineWidth_text"])
                     
     # shall the image, containing the contours, be shown?
     if settings["showFinalImage"]:
