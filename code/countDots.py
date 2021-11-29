@@ -23,7 +23,13 @@ def countDots(  file,
                             "saveImage" : True,
                             "saveDir" : "../processedFiles/" ,
                             "overlay" : 0.0,
-                            "source" : "file"}):
+                            "source" : "file",
+                            "lineWidth_count": 3, "color_count" : [209, 80, 0, 255], "position_count" : [50, 460],
+                            "fontsize_count" : 10, "showCountOnImage_count" : True,
+                            "lineWidth_text": 3, "color_text" : [209, 80, 0, 255], "position_text" : [50, 200],
+                            "fontsize_text" : 5, "showTextOnImage_text" : True,
+                            "lineWidth_counted": 7, "color_counted" : [209, 80, 0, 255],
+                            "fontsize_counted" : 5, "showTextOnImage_counted" : True}):
 
     # Image read
     img = Image.open(file)
@@ -102,7 +108,7 @@ def countDots(  file,
 
     # Find and draw contours
     contours, _ = cv2.findContours(morphImg, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    contoursImg = cv2.cvtColor(morphImg, cv2.COLOR_GRAY2RGB)
+    contoursImg = cv2.cvtColor(morphImg, cv2.COLOR_GRAY2BGR)
 
 
     ## filter by area
@@ -127,37 +133,44 @@ def countDots(  file,
 
                 # if amount dots < 1.5, it gets floored, thus only counted as 1 point
                 # in this case apend the single dot to the list of single dots
-                if math.floor(amountDots) == 1:
+                if round(amountDots) == 1:
                     detectedContours.append(cnt)
                 else:
                     # add the contour to the list of contours as often as a dot could fit into the form
-                    for _ in range(math.floor(amountDots)):
+                    for _ in range(round(amountDots)):
+
                         multipleContours.append(cnt)
+
+                        if settings["showTextOnImage_counted"]:
+                            # write amount of dots counted at that position
+                            addTextToImage(contoursImg, 
+                                                str(round(amountDots)),
+                                                cnt[0][0],
+                                                settings["fontsize_counted"],
+                                                settings["color_counted"],
+                                                settings["lineWidth_counted"])
 
             else:
 
                 tooBigContours.append(cnt)
 
     cv2.drawContours(contoursImg, detectedContours, -1, (0,180,0), 10) # draw detected contours
-    cv2.drawContours(contoursImg, multipleContours, -1, (0,180,240), 10) # draw multiple contours
-    cv2.drawContours(contoursImg, tooBigContours, -1, (0,0,255), 10) # draw contours which are too big
+    cv2.drawContours(contoursImg, multipleContours, -1, (240,180,0), 10) # draw multiple contours
+    cv2.drawContours(contoursImg, tooBigContours, -1, (255,0,0), 10) # draw contours which are too big
 
     countedDots = len(detectedContours) + len(multipleContours)
 
     # if the original image and the final image shall be overlayed
     if settings["overlay"] > 0.0:
 
-        originalImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        cv2.addWeighted(originalImage, settings["overlay"],
+        cv2.addWeighted(np.array(img), settings["overlay"],
                         contoursImg, 1.0 - settings["overlay"], 0.0, contoursImg)
 
 
     # convert image to other color space in order to apply 
-    convertedImage = cv2.cvtColor(contoursImg, cv2.COLOR_BGR2RGB)
-
     if settings["showCountOnImage_count"]:
 
-        addTextToImage(convertedImage, 
+        addTextToImage(contoursImg, 
                     str(countedDots), 
                     settings["position_count"], 
                     settings["fontsize_count"], 
@@ -166,7 +179,7 @@ def countDots(  file,
 
     if settings["showTextOnImage_text"]:
 
-            addTextToImage(convertedImage, 
+            addTextToImage(contoursImg, 
                 os.path.basename(file), 
                 settings["position_text"], 
                 settings["fontsize_text"], 
@@ -176,7 +189,7 @@ def countDots(  file,
     # shall the image, containing the contours, be shown?
     if settings["showFinalImage"]:
 
-        pil_img = Image.fromarray(convertedImage)
+        pil_img = Image.fromarray(contoursImg)
 
         ImageShow.show(pil_img)
 
@@ -194,7 +207,6 @@ def countDots(  file,
         saveImagePath = os.path.join(settings["saveDir"], bareBaseName + "_dotsCounted-" + str(countedDots) + ".jpg")
 
         # convert color space back to what cv2 is used to
-        contoursImg = cv2.cvtColor(convertedImage, cv2.COLOR_RGB2BGR)
         cv2.imwrite(saveImagePath, contoursImg)
 
 

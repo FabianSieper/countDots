@@ -1,30 +1,30 @@
 {
     "sizes" : {
-        "s1": 300,    
-        "s2": 4000,
+        "s1": 100,    
+        "s2": 3000,
         "s3": 16000
     },
 
     "saturation": {
-        "saturationIncrease": 10.0,
+        "saturationIncrease": 1,
         "showImage": false
     },
 
     "contrast": {
-        "contrastIncrease": 2,
+        "contrastIncrease": 10,
         "showImage": false
     },
     
     "color" : {
-        "lowerColor": [45, 28, 0],
-        "upperColor": [110, 255, 255]
+        "lowerColor": [45, 28, 40],
+        "upperColor": [125, 255, 255]
     },
 
     "source": "file",       
 
     "showFinalImage": true,
 
-    "overlayOriginalImage": 0.8,
+    "overlayOriginalImage": 0.7,
 
     "saveImage": true,
 
@@ -45,5 +45,12 @@
         "position" : [50, 200],
         "fontSize" : 5
 
+    },
+
+    "amountDotsCounted" : {
+        "show" : true,
+        "lineWidth" : 7,
+        "color" : [209, 80, 0, 255],
+        "fontSize" : 5
     }
 }

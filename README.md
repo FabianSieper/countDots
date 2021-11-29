@@ -44,8 +44,9 @@ or double click the file _main.py_. This requires python to be selected as the d
 
 You are asked to select whether you'd like to select a single file or multiple files inside of a folder (type "file" to select a single file). The selected file(s) are then processed, the amount of found dots displayed in the command line and an image (or multiple images) are saved under the folder `processedFiles/`. These images display which dots were found (green), which dots seem to be merged (yellow) and which areas aren't detected as dots (red).
 
-### Merged dots
-If some of the dots are too close to each other, it can appear that they are a single dot. For this, the area found is compared to the maximal set dot size. If the area is not _too_ large, the area is divided by the maximal dot-area. By this, an approximate amount of dots is calculated. 
+## Usage tips
+
+For the best performance over multiple images, the _**same distance**_ to the dots should be maintained. This is, because the area detected is depending on the resolution of the dots, which varies when the distance varies. 
 
 ## Settings
 
@@ -58,6 +59,16 @@ As the size of dots (measured in area, amount of pixels) might differ between ca
 - `s2`: The maximal dot size. If a dot is between _s1_ and _s2_, the dots are detected. If they are bigger than _s2_, they aren't detected as single but as multiple dots.
 - `s3`: The maximal area a collection of dots can have. If an area is bigger than _s2_, the area might represent multiple dots, laying near each other. If the area is bigger than _s2_ and also _smaller_ than _s3_, the size of the area is divided by the average dot size _(s1 + s2) / 2_. By doing so, an approximate amount of dots in this area can be calculated.
 
+#### Color codes
+
+- _green_ contours: A single detected dot
+- _orange_ contours: Multiple detected dots
+- _red_ contours: No dots detected, as the area is too big to be a bundle of dots
+
+### Merged dots
+
+If some of the dots are too close to each other, it can appear that they may be a single dot. For this, the area found is compared to the maximal set dot size. If the area is not *too* large, the area is divided by the maximal dot-area. By this, an approximate amount of dots is calculated. To show how many dots are approximated per found instance, set the parameter `show` underneath the parameter `amountDotsCounted` to _true_. 
+
 
 ### Color of interest
 By default only dots with the color _blue_ are minded. To change the color range, you can simply modify the values `lowerColor` and `upperColor` in the settings. The color values are set in the hsv-color space. Thus the values have to be:
@@ -69,7 +80,7 @@ Color = [Hue, Saturation, Value]
 with the max values being
 
 ```
-Color = [180, 360, 360]
+Color = [180, 255, 255]
 ```
 
 If you transfer color codes from other applications or websites, keep in mind the scale them accordingly.

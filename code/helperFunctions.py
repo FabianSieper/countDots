@@ -63,6 +63,11 @@ def readSettings(path = "settings.json"):
     fontsize_text = 5
     showTextOnImage_text = True
 
+    lineWidth_counted = 7
+    color_counted = [209, 80, 0, 255]
+    fontsize_counted = 5
+    showTextOnImage_counted = True
+
     # try to overwrite the values by reading a file
     try:
         file = open(path)
@@ -103,6 +108,11 @@ def readSettings(path = "settings.json"):
         fontsize_text = loadedJson["fileNameToImage"]["fontSize"]
         showTextOnImage_text = loadedJson["fileNameToImage"]["show"]
 
+        lineWidth_counted = loadedJson["amountDotsCounted"]["lineWidth"]
+        color_counted = loadedJson["amountDotsCounted"]["color"]
+        fontsize_counted = loadedJson["amountDotsCounted"]["fontSize"]
+        showTextOnImage_counted = loadedJson["amountDotsCounted"]["show"]
+
     except Exception as e:
         
         print("[WARNING] - Not able to read settings. Default settings are used ...\nDoes the file exist, or does it maybe have some spelling errors inside of it? ")
@@ -122,7 +132,9 @@ def readSettings(path = "settings.json"):
                 "lineWidth_count": lineWidth_count, "color_count" : color_count, "position_count" : position_count,
                 "fontsize_count" : fontsize_count, "showCountOnImage_count" : showCountOnImage_count,
                 "lineWidth_text": lineWidth_text, "color_text" : color_text, "position_text" : position_text,
-                "fontsize_text" : fontsize_text, "showTextOnImage_text" : showTextOnImage_text}
+                "fontsize_text" : fontsize_text, "showTextOnImage_text" : showTextOnImage_text,
+                "lineWidth_counted": lineWidth_counted, "color_counted" : color_counted,
+                "fontsize_counted" : fontsize_counted, "showTextOnImage_counted" : showTextOnImage_counted}
 
      
 
