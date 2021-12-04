@@ -164,9 +164,15 @@ def getCountours(settings, pilImage):
 
 def getFinalImage(detectedContours, multipleContours, settings, contoursImgPIL, originalImgPIL, filename):
 
+    # for safety reasons, convert the image to a cv2 image (does not hurt if it already is an cv2 iamge)
     contoursImgOPENCV = pilToOpenCVImage(contoursImgPIL)
     originalImgOPENCV = pilToOpenCVImage(originalImgPIL)
     
+    # if the images dont have the right dimensions, transpose one of the images
+    if contoursImgOPENCV.shape != originalImgOPENCV.shape:
+        contoursImgOPENCV = np.transpose(contoursImgOPENCV, axes=(1, 0, 2))
+
+
     # count how many dots were detected
     countedDots = len(detectedContours) + len(multipleContours)
 

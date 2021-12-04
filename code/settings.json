@@ -1,15 +1,15 @@
 {
     "sizes": {
-        "s1": 119,
-        "s2": 3750,
+        "s1": 12,
+        "s2": 6071,
         "s3": 23393
     },
     "saturation": {
-        "saturationIncrease": 22,
+        "saturationIncrease": 56,
         "showImage": false
     },
     "contrast": {
-        "contrastIncrease": 2,
+        "contrastIncrease": 4,
         "showImage": false
     },
     "color": {
@@ -72,6 +72,6 @@
     },
     "canvasSize": 600,
     "brush": {
-        "linewidth": 76
+        "linewidth": 17
     }
 }

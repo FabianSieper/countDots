@@ -167,7 +167,7 @@ class App:
 
         # contrast slider
         self.contrSlider = tkinter.Scale( self.slider_frame1, 
-                                        from_=0, 
+                                        from_=1, 
                                         to=15, 
                                         orient=HORIZONTAL, 
                                         length = self.canvasWidth / 3, 
@@ -183,7 +183,7 @@ class App:
 
         # slider for saturation
         self.satSlider = tkinter.Scale( self.slider_frame1, 
-                                        from_=0, 
+                                        from_=1, 
                                         to=100, 
                                         orient=HORIZONTAL, 
                                         length = self.canvasWidth / 3, 
@@ -348,10 +348,13 @@ class App:
 
     def computeFinalImg(self):
 
+        # TODO: contrImg and orignalImg have transposed sizes
+        
         satImg = self.computeSatImg()
-        originalImg = Image.open(self.imageName)
-
+        originalImg = self.originalImageCV
+        
         contrImg, detectedContours, multipleContours, tooBigContours = getCountours(self.settings, satImg)
+
         finalImg, amountCountedDots = getFinalImage(detectedContours, multipleContours, self.settings, contrImg, originalImg, self.imageName)
 
         self.finalImage = pilToOpenCVImage(finalImg)
@@ -360,11 +363,7 @@ class App:
 
     def computeAndShowFinalImg(self):
 
-        satImg = self.computeSatImg()
-        originalImg = Image.open(self.imageName)
-
-        contrImg, detectedContours, multipleContours, tooBigContours = getCountours(self.settings, satImg)
-        finalImg, amountCountedDots = getFinalImage(detectedContours, multipleContours, self.settings, contrImg, originalImg, self.imageName)
+        finalImg, amountCountedDots = self.computeFinalImg()
 
         self.finalImage = pilToOpenCVImage(finalImg)
 
