@@ -1,5 +1,6 @@
+from ntpath import join
 import tkinter
-from tkinter.constants import HORIZONTAL
+from tkinter.constants import HORIZONTAL, ROUND
 import cv2
 import PIL.Image, PIL.ImageTk
 from tkinter.filedialog import askopenfilename
@@ -18,7 +19,8 @@ class App:
         # set object-values
         self.canvasWidth = self.settings["canvasWidth"]
 
-        self.contrImage = None
+        self.originalImageCV = None
+        self.contrImage = None  
         self.satImage = None
         self.finalImage = None
 
@@ -32,6 +34,9 @@ class App:
         # Create a canvas that can fit the above image
         self.createCanvas()
 
+        # setup brush variables
+        self.setupBrush()
+
         # set an image to the screen
         self.updateImage()
 
@@ -41,10 +46,56 @@ class App:
         # start the main loop
         self.window.mainloop()
 
+    def setupBrush(self):
+        # Idea from site: https://gist.github.com/nikhilkumarsingh/85501ee2c3d8c0cfa9d1a27be5781f06 
+        self.old_x = None
+        self.old_y = None
+        self.line_width = self.settings["brush"]["linewidth"]
+        self.color = "black"    
+        
+        
+        self.canvas.bind('<B1-Motion>', self.paint)
+        self.canvas.bind('<ButtonRelease-1>', self.reset)
+
+    def paint(self, event):
+
+        self.line_width = self.settings["brush"]["linewidth"]
+
+
+        if self.old_x and self.old_y:
+
+            self.canvas.create_line(self.old_x, self.old_y, event.x, event.y,
+                               width=self.line_width, fill=self.color,
+                               capstyle=ROUND, smooth=True, splinesteps=36)
+
+            # also draw on original image
+
+            # compute how much bigger the original image is
+            scaleUpOriginalImage = self.cv_img.shape[0] / int(self.canvasWidth * (self.height / self.width))
+
+            # compute dots on the original image (wichnormally is bigger)
+            original_point1 = (int(self.old_x * scaleUpOriginalImage), int(self.old_y * scaleUpOriginalImage))
+            original_point2 = (int(event.x * scaleUpOriginalImage), int(event.y * scaleUpOriginalImage))
+
+            self.originalImageCV = cv2.line(self.originalImageCV, 
+                                            original_point1, 
+                                            original_point2, 
+                                            (0, 0, 0),
+                                            int(self.line_width * scaleUpOriginalImage))
+
+                                    
+        self.old_x = event.x
+        self.old_y = event.y
+
+    def reset(self, event):
+        self.old_x, self.old_y = None, None
+
     def loadNewImage(self):
 
         self.imageName = askopenfilename()
-        self.cv_img = cv2.cvtColor(cv2.imread(self.imageName), cv2.COLOR_BGR2RGB)
+        self.originalImageCV = cv2.imread(self.imageName)
+
+        self.cv_img = cv2.cvtColor(self.originalImageCV, cv2.COLOR_BGR2RGB)
 
     def createCanvas(self):
 
@@ -140,9 +191,13 @@ class App:
         self.updateImage(self.finalImage)
 
     def computeContrImg(self):
+        
+        # convert original image to pil-image
+        img = cv2.cvtColor(self.originalImageCV, cv2.COLOR_BGR2RGB)
+        im_pil = Image.fromarray(img)
 
-        img = Image.open(self.imageName)
-        contrImage = increaseContrast(self.settings, self.imageName, img.copy())
+        # compute contrast-boosted image
+        contrImage = increaseContrast(self.settings, self.imageName, im_pil.copy())
 
         self.contrImage = pilToOpenCVImage(contrImage)
 

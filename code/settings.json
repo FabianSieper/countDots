@@ -5,11 +5,11 @@
         "s3": 16000
     },
     "saturation": {
-        "saturationIncrease": 25,
+        "saturationIncrease": 34,
         "showImage": false
     },
     "contrast": {
-        "contrastIncrease": 3,
+        "contrastIncrease": 4,
         "showImage": false
     },
     "color": {
@@ -70,5 +70,8 @@
         ],
         "fontSize": 5
     },
-    "canvasWidth": 800
+    "canvasWidth": 600,
+    "brush": {
+        "linewidth": 60
+    }
 }
