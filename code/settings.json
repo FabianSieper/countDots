@@ -1,56 +1,74 @@
 {
-    "sizes" : {
-        "s1": 100,    
+    "sizes": {
+        "s1": 100,
         "s2": 3000,
         "s3": 16000
     },
-
     "saturation": {
-        "saturationIncrease": 1,
+        "saturationIncrease": 25,
         "showImage": false
     },
-
     "contrast": {
-        "contrastIncrease": 10,
+        "contrastIncrease": 3,
         "showImage": false
     },
-    
-    "color" : {
-        "lowerColor": [45, 10, 40],
-        "upperColor": [170, 255, 255]
+    "color": {
+        "lowerColor": [
+            45,
+            10,
+            40
+        ],
+        "upperColor": [
+            170,
+            255,
+            255
+        ]
     },
-
-    "source": "file",       
-
-    "showFinalImage": true,
-
+    "source": "file",
+    "showFinalImage": false,
     "overlayOriginalImage": 0.7,
-
-    "saveImage": true,
-
+    "saveImage": false,
     "saveDir": "../processedFiles/",
-
     "countedDotsToImage": {
-        "show" : true,
-        "lineWidth" : 3,
-        "color" : [209, 80, 0, 255],
-        "position" : [50, 460],
-        "fontSize" : 10
+        "show": true,
+        "lineWidth": 3,
+        "color": [
+            255,
+            80,
+            0,
+            255
+        ],
+        "position": [
+            50,
+            460
+        ],
+        "fontSize": 10
     },
-
-    "fileNameToImage" : {
-        "show" : true,
-        "lineWidth" : 3,
-        "color" : [209, 80, 0, 255],
-        "position" : [50, 200],
-        "fontSize" : 5
-
+    "fileNameToImage": {
+        "show": true,
+        "lineWidth": 3,
+        "color": [
+            255,
+            80,
+            0,
+            255
+        ],
+        "position": [
+            50,
+            200
+        ],
+        "fontSize": 5
     },
-
-    "amountDotsCounted" : {
-        "show" : true,
-        "lineWidth" : 7,
-        "color" : [209, 80, 0, 255],
-        "fontSize" : 5
-    }
+    "amountDotsCounted": {
+        "show": true,
+        "lineWidth": 7,
+        "color": [
+            255,
+            80,
+            0,
+            255
+        ],
+        "fontSize": 5
+    },
+    "canvasWidth": 800
 }
