@@ -32,15 +32,52 @@ To pull the project using git type the following line:
 ```
 git clone https://github.com/FabianSieper/countDots
 ```
-# Usage
+# Usage (GUI)
 
-To run it simply run 
+To run the GUI version of the program, enter the following line into your command line: 
+
+```
+python app.py
+```
+
+or **double click** the file _app.py_.
+
+## Slides
+
+You can modify contrast and saturation by sliding the corresponding slider. 
+
+## Previews
+
+There are three different previews, which can accessed:
+
+- **Contrast boost**
+  - Displays the original selected image, which has an increase in contrast. 
+- **Saturation boost**
+  - Displays the contrast-increased image in addition with an increase in saturation.
+- **Final image**
+  - Displays the final image, containing the detected dots, the amount of detected dots and further possibilities. For further possibilities read the section _Usage (Raw)_.
+
+## Saving a processed image
+
+If you are happy with your selected settings, you can save the final image by pressing the button _SaveFinalImage_.
+
+## Selecting the Area of interest
+
+Use the mouse to narrow down the area of interest by overdrawing areas. Points are not searched in overdrawn areas.
+
+## Further settings
+
+Further settings, have to be changed inside of the file `code/settings.json`. For further information lookup descriptions in secion _Usage (Raw)_. 
+
+# Usage (Raw)
+
+To run the raw scripts enter the following line into your command line: 
 
 ```
 python main.py
 ```
 
-or double click the file _main.py_. This requires python to be selected as the default application for files with the ending _.py_.
+or **double click** the file _main.py_. This requires python to be selected as the default application for files with the ending _.py_.
 
 You are asked to select whether you'd like to select a single file or multiple files inside of a folder (type "file" to select a single file). The selected file(s) are then processed, the amount of found dots displayed in the command line and an image (or multiple images) are saved under the folder `processedFiles/`. These images display which dots were found (green), which dots seem to be merged (yellow) and which areas aren't detected as dots (red).
 

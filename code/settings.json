@@ -5,7 +5,7 @@
         "s3": 16000
     },
     "saturation": {
-        "saturationIncrease": 34,
+        "saturationIncrease": 23,
         "showImage": false
     },
     "contrast": {
@@ -72,6 +72,6 @@
     },
     "canvasWidth": 600,
     "brush": {
-        "linewidth": 60
+        "linewidth": 80
     }
 }
