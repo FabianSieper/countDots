@@ -24,7 +24,7 @@
             255
         ]
     },
-    "source": "folder",
+    "source": "file",
     "showFinalImage": false,
     "overlayOriginalImage": 0.7,
     "saveImage": true,

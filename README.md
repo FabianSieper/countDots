@@ -161,7 +161,7 @@ By default, the saturation increase has the value _10_ and no saturated increase
 
 ### Source
 
-If you'd like to compute multiple files at once, you can place all your files inside of one folder. All files inside of this folder will be processed. For this, change the parameter `source` to _folder_. By default, only one file can be selected.
+If you'd like to compute multiple files at once, you can place all your files inside of one folder. All files inside of this folder will be processed. For this, change the parameter `source` to _folder_. By default, only one file can be selected. (Available parameter: _file_ and _folder_).
 
 ### Show final image
 
