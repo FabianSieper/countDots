@@ -46,6 +46,20 @@ or **double click** the file _app.py_.
 
 You can modify contrast and saturation by sliding the corresponding slider. 
 
+- **Contrast**
+  - Set the amount of contrast applied to the image
+- **Saturation**
+  - Set the amount of saturation applied to the (contrast) image
+  - This setting is applied after the contrast of the image has been adjusted
+- **Brush size**
+  - Set the size of the brush
+- **Smallest dots**
+  - Set the minimal dot size
+- **Biggest dots**
+  - Set the maximal dot size
+- **Max Dot collection-size**
+  - Set the maximal size, a collection of dots can have
+
 ## Previews
 
 There are three different previews, which can accessed:
@@ -69,7 +83,7 @@ If a mistake was made while selecting an area, pressing the button _Reset_ reloa
 
 ## Further settings
 
-Further settings, have to be changed inside of the file `code/settings.json`. For further information lookup descriptions in secion _Usage (Raw)_. 
+Even more settings are available. For further information lookup descriptions in section _Usage (Raw)_. 
 
 # Usage (Raw)
 
@@ -186,3 +200,12 @@ If you'd like to display the name of a file on the image itself, you can enter t
 - `color`: Which color shall the text be in?
 - `position`: At which position shall the text be? _[x, y]_
 - `fontSize`: How big shall the text be?
+
+### Window Size
+
+If you are using the GUI-variant of the program the possibility of adjusting the windows size if given. For this adjust the parameter `canvasSize` to your liking. This parameter describes the maximal length and width of the canvas. The images are scaled accordingly.
+
+### Brush size
+
+If you are using the GUI-variant of the program you have to possibility to change the size of the brush. The brush is used to select parts of the image, which shall not be process while searching dots.
+

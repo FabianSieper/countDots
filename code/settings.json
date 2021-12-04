@@ -1,8 +1,8 @@
 {
     "sizes": {
-        "s1": 100,
-        "s2": 3000,
-        "s3": 16000
+        "s1": 119,
+        "s2": 3750,
+        "s3": 23393
     },
     "saturation": {
         "saturationIncrease": 22,
@@ -24,10 +24,10 @@
             255
         ]
     },
-    "source": "file",
+    "source": "folder",
     "showFinalImage": false,
     "overlayOriginalImage": 0.7,
-    "saveImage": false,
+    "saveImage": true,
     "saveDir": "../processedFiles/",
     "countedDotsToImage": {
         "show": true,
@@ -70,8 +70,8 @@
         ],
         "fontSize": 5
     },
-    "canvasWidth": 600,
+    "canvasSize": 600,
     "brush": {
-        "linewidth": 80
+        "linewidth": 76
     }
 }

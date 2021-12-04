@@ -1,14 +1,13 @@
-from ntpath import join
 import tkinter
-from tkinter.constants import HORIZONTAL, RAISED, ROUND
+from tkinter.constants import CENTER, HORIZONTAL, RAISED, ROUND
 import cv2
 import PIL.Image, PIL.ImageTk
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, askdirectory
 from helperFunctions import readSettings, saveSettings
 from countDots import increaseContrast, incraseSaturation, getCountours, getFinalImage, pilToOpenCVImage, saveImage
 from PIL import Image
 import numpy as np
-
+import os
 
 class App:
     def __init__(self, window, window_title, canvasWidth = 400, settingsPath = "settings.json"):
@@ -17,7 +16,14 @@ class App:
         self.settings = readSettings(settingsPath)
 
         # set object-values
-        self.canvasWidth = self.settings["canvasWidth"]
+        self.canvasSize = self.settings["canvasSize"]
+
+        ## for single file processing
+        self.imageName = None
+        ## for processing of multiple files
+        self.imageDir = None
+        self.listOfImages = []
+        self.imageIndex = 0
 
         self.originalImageCV = None
         self.contrImage = None  
@@ -92,21 +98,59 @@ class App:
 
     def loadNewImage(self):
 
-        self.imageName = askopenfilename()
+        # check if a single file or a whole folder shall be computed
+        if self.settings["source"] == "file":
+            self.imageName = askopenfilename()
+
+        elif self.imageIndex == 0:  # if not file has been read of the folder by now
+            self.imageDir = askdirectory()  
+            self.listOfImages = os.listdir(self.imageDir)
+            self.imageName = os.path.join(self.imageDir, self.listOfImages[self.imageIndex])
+
+        elif self.imageIndex > 0:   # if images already have been read
+            self.imageName = os.path.join(self.imageDir, self.listOfImages[self.imageIndex])
+
         self.originalImageCV = cv2.imread(self.imageName)
 
         self.cv_img = cv2.cvtColor(self.originalImageCV, cv2.COLOR_BGR2RGB)
 
-    def createCanvas(self):
+
+    def createCanvas(self, update = False):
 
         # Get the image dimensions (OpenCV stores image data as NumPy ndarray)
         self.height, self.width, _ = self.cv_img.shape
 
-        self.canvasHeight = int(self.canvasWidth * (self.height / self.width))
+        # adjust the size of the canvas depending on the format of the image
+        if self.height > self.width:
 
-    
-        self.canvas = tkinter.Canvas(self.window, width = self.canvasWidth, height = self.canvasHeight)
-        self.canvas.pack()
+            self.canvasHeight = self.canvasSize
+            self.canvasWidth =  int(self.canvasHeight * (self.width / self.height))
+
+        else:
+            self.canvasWidth = self.canvasSize
+            self.canvasHeight =  int(self.canvasWidth * (self.height / self.width))
+
+        if not update:
+            self.canvas = tkinter.Canvas(self.window, width = self.canvasWidth, height = self.canvasHeight)
+            self.canvas.pack()
+        else:
+            self.canvas.config(width = self.canvasWidth, height = self.canvasHeight)
+
+    def updateSize1(self, value):
+
+        self.settings["sizes"]["s1"] = int(value)
+
+    def updateSize2(self, value):
+
+        self.settings["sizes"]["s2"] = int(value)
+
+    def updateSize3(self, value):
+
+        self.settings["sizes"]["s3"] = int(value)
+
+    def updateBrushSize(self, value):
+
+        self.settings["brush"]["linewidth"] = int(value)
 
     def addSlider(self):
         # --------------------------------
@@ -124,9 +168,9 @@ class App:
         # contrast slider
         self.contrSlider = tkinter.Scale( self.slider_frame1, 
                                         from_=0, 
-                                        to=50, 
+                                        to=15, 
                                         orient=HORIZONTAL, 
-                                        length = self.canvasWidth / 2, 
+                                        length = self.canvasWidth / 3, 
                                         command=self.contrChanged)
                                         
         self.contrSlider.grid(row = 1, column=0, sticky = tkinter.W + tkinter.E)
@@ -137,29 +181,102 @@ class App:
         self.saturLabel = tkinter.Label(self.slider_frame1, text="Saturation")
         self.saturLabel.grid(row = 0, column=1)
 
+        # slider for saturation
         self.satSlider = tkinter.Scale( self.slider_frame1, 
                                         from_=0, 
-                                        to=50, 
+                                        to=100, 
                                         orient=HORIZONTAL, 
-                                        length = self.canvasWidth / 2, 
+                                        length = self.canvasWidth / 3, 
                                         command=self.saturationChanged)
 
         self.satSlider.grid(row = 1, column=1, sticky = tkinter.W + tkinter.E)
         self.satSlider.set(self.settings["saturation"]["saturationIncrease"])
 
+        # label for brush size
+        self.brushLabel = tkinter.Label(self.slider_frame1, text="Brush size")
+        self.brushLabel.grid(row = 0, column=2)
+
+        # slider for brush size
+        self.brushSlider = tkinter.Scale( self.slider_frame1, 
+                                        from_=0, 
+                                        to=100, 
+                                        orient=HORIZONTAL, 
+                                        length = self.canvasWidth / 3, 
+                                        command=self.updateBrushSize)
+
+        self.brushSlider.grid(row = 1, column=2, sticky = tkinter.W + tkinter.E)
+        self.brushSlider.set(self.settings["brush"]["linewidth"])
+
+        # sizes of dots
+        # label for dot size 1
+        self.size1Label = tkinter.Label(self.slider_frame1, text="Smallest dots")
+        self.size1Label.grid(row = 2, column = 0)
+
+        # slider for size 1
+        self.size1Slider = tkinter.Scale(self.slider_frame1,
+                                        from_=0,
+                                        to=2000,
+                                        orient=HORIZONTAL,
+                                        length=self.canvasWidth / 3,
+                                        command=self.updateSize1)
+        self.size1Slider.grid(row = 3, column = 0, sticky = tkinter.W + tkinter.E)
+        self.size1Slider.set(self.settings["sizes"]["s1"])
+
+        # label for dot size 2
+        self.size2Label = tkinter.Label(self.slider_frame1, text="Biggest dots")
+        self.size2Label.grid(row = 2, column = 1)
+        
+        # slider for size 2
+        self.size2Slider = tkinter.Scale(self.slider_frame1,
+                                        from_=0,
+                                        to=10000,
+                                        orient=HORIZONTAL,
+                                        length=self.canvasWidth / 3,
+                                        command=self.updateSize2)
+        self.size2Slider.grid(row = 3, column = 1, sticky = tkinter.W + tkinter.E)
+        self.size2Slider.set(self.settings["sizes"]["s2"])
+
+        # label for dot size 3
+        self.size3Label = tkinter.Label(self.slider_frame1, text="Max Dot collection-size")
+        self.size3Label.grid(row = 2, column = 2)
+
+        # slider for size 3
+        self.size3Slider = tkinter.Scale(self.slider_frame1,
+                                        from_=0,
+                                        to=30000,
+                                        orient=HORIZONTAL,
+                                        length=self.canvasWidth / 3,
+                                        command=self.updateSize3)
+        self.size3Slider.grid(row = 3, column = 2, sticky = tkinter.W + tkinter.E)
+        self.size3Slider.set(self.settings["sizes"]["s3"])
+
         self.slider_frame1.columnconfigure(0, weight=1)
         self.slider_frame1.columnconfigure(1, weight=1)
         self.slider_frame1.columnconfigure(2, weight=1)
         self.slider_frame1.columnconfigure(3, weight=1)
+        self.slider_frame1.columnconfigure(4, weight=1)
+        self.slider_frame1.columnconfigure(5, weight=1)
+        self.slider_frame1.columnconfigure(6, weight=1)
+        self.slider_frame1.columnconfigure(7, weight=1)
+        self.slider_frame1.columnconfigure(8, weight=1)
+        self.slider_frame1.columnconfigure(9, weight=1)
 
     def addButtons(self):
         
         # ---------------------------------
         # Add buttons to gui
 
+        # frame for all of the buttons
         self.button_frame = tkinter.Frame(self.window)
         self.button_frame.pack(fill=tkinter.X, side=tkinter.BOTTOM)
 
+        # if multiple images shall be process, add a "next" button,
+        if self.settings["source"] != "file":
+
+            self.nextImgButton = tkinter.Button(self.button_frame, command=self.nextImage, text="Next Image", anchor=CENTER)
+            self.nextImgButton.grid(row = 0, column = 5)
+
+        ## append static buttons
         self.resetDrawingButton = tkinter.Button(self.button_frame, command=self.resetDrawing, text="Reset")
         self.resetDrawingButton.grid(row = 0, column = 0, sticky = tkinter.W + tkinter.E)
 
@@ -180,7 +297,33 @@ class App:
         self.button_frame.columnconfigure(1, weight=1)
         self.button_frame.columnconfigure(2, weight=1)
         self.button_frame.columnconfigure(3, weight=1)
-        self.button_frame.columnconfigure(4, weight=1)
+
+        if self.settings["source"] != "file":
+
+            self.button_frame.columnconfigure(4, weight=1)
+
+
+    # sets the next image in the list of images 
+    def nextImage(self):
+
+        self.imageIndex += 1
+
+        if len(self.listOfImages) > self.imageIndex and self.imageDir != None:
+            
+            self.imageName = os.path.join(self.imageDir, self.listOfImages[self.imageIndex])
+            self.loadNewImage() # reads the new image 
+            self.createCanvas(update=True)
+            self.updateImage(self.cv_img)
+
+        elif len(self.listOfImages) <= self.imageIndex:
+
+            print("[INFO] - The last image inside of the folder has been reached.")
+
+        else:
+
+            print("[WARNING] - Not able to go to load the next image!")
+
+
 
     # reload the manipulated image, in order to remove the drawn elements
     def resetDrawing(self):
@@ -192,9 +335,9 @@ class App:
 
     def addUIElements(self):
 
-        self.addSlider()
-        
         self.addButtons()
+        
+        self.addSlider()
 
     def saveFinalImage(self):
 

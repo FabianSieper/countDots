@@ -251,7 +251,7 @@ def countDots(  file,
     # save image
     if settings["saveImage"]:
 
-        saveImage(file, settings, countDots, detectedDotsImage)
+        saveImage(file, settings, countedDots, detectedDotsImage)
 
     print("Counted dots in file '" + os.path.basename(file) + "': " + str(countedDots))
 
