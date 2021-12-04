@@ -1,6 +1,6 @@
 from ntpath import join
 import tkinter
-from tkinter.constants import HORIZONTAL, ROUND
+from tkinter.constants import HORIZONTAL, RAISED, ROUND
 import cv2
 import PIL.Image, PIL.ImageTk
 from tkinter.filedialog import askopenfilename
@@ -108,56 +108,93 @@ class App:
         self.canvas = tkinter.Canvas(self.window, width = self.canvasWidth, height = self.canvasHeight)
         self.canvas.pack()
 
-    def addUIElements(self):
-
+    def addSlider(self):
         # --------------------------------
         # Add settings slider
+
+        # create a frame for the slider section
+        self.slider_frame1 = tkinter.Frame(self.window)
+        self.slider_frame1.pack(fill=tkinter.X, side=tkinter.BOTTOM)
+
         # contrast
-        self.contrSlider = tkinter.Scale( self.window, 
+        # label for contrast slider
+        self.contrLabel = tkinter.Label(self.slider_frame1, text="Contrast")
+        self.contrLabel.grid(row = 0, column=0)
+
+        # contrast slider
+        self.contrSlider = tkinter.Scale( self.slider_frame1, 
                                         from_=0, 
                                         to=50, 
                                         orient=HORIZONTAL, 
-                                        length = self.canvasWidth, 
+                                        length = self.canvasWidth / 2, 
                                         command=self.contrChanged)
                                         
-        self.contrSlider.pack(anchor=tkinter.CENTER, expand=True)
+        self.contrSlider.grid(row = 1, column=0, sticky = tkinter.W + tkinter.E)
         self.contrSlider.set(self.settings["contrast"]["contrastIncrease"])
 
         # saturation
-        self.satSlider = tkinter.Scale( self.window, 
+        # label for saturation slider
+        self.saturLabel = tkinter.Label(self.slider_frame1, text="Saturation")
+        self.saturLabel.grid(row = 0, column=1)
+
+        self.satSlider = tkinter.Scale( self.slider_frame1, 
                                         from_=0, 
                                         to=50, 
                                         orient=HORIZONTAL, 
-                                        length = self.canvasWidth, 
+                                        length = self.canvasWidth / 2, 
                                         command=self.saturationChanged)
 
-        self.satSlider.pack(anchor=tkinter.CENTER, expand=True)
+        self.satSlider.grid(row = 1, column=1, sticky = tkinter.W + tkinter.E)
         self.satSlider.set(self.settings["saturation"]["saturationIncrease"])
 
+        self.slider_frame1.columnconfigure(0, weight=1)
+        self.slider_frame1.columnconfigure(1, weight=1)
+        self.slider_frame1.columnconfigure(2, weight=1)
+        self.slider_frame1.columnconfigure(3, weight=1)
+
+    def addButtons(self):
+        
         # ---------------------------------
-        # Add button for start computing
+        # Add buttons to gui
 
         self.button_frame = tkinter.Frame(self.window)
         self.button_frame.pack(fill=tkinter.X, side=tkinter.BOTTOM)
 
+        self.resetDrawingButton = tkinter.Button(self.button_frame, command=self.resetDrawing, text="Reset")
+        self.resetDrawingButton.grid(row = 0, column = 0, sticky = tkinter.W + tkinter.E)
+
         self.showContrImgButton = tkinter.Button(self.button_frame, command=self.computeAndShowContrImg, text="ShowContrImg")
-        self.showContrImgButton.grid(row = 0, column = 0, sticky = tkinter.W + tkinter.E)
+        self.showContrImgButton.grid(row = 0, column = 1, sticky = tkinter.W + tkinter.E)
 
         self.showSatImgButton = tkinter.Button(self.button_frame, command=self.computeAndShowSatImg, text="ShowSatImg")
-        self.showSatImgButton.grid(row = 0, column = 1, sticky = tkinter.W + tkinter.E)
+        self.showSatImgButton.grid(row = 0, column = 2, sticky = tkinter.W + tkinter.E)
 
         self.computeButton = tkinter.Button(self.button_frame, command=self.computeAndShowFinalImg, text="Compute")
-        self.computeButton.grid(row = 0, column = 2, sticky = tkinter.W + tkinter.E)
+        self.computeButton.grid(row = 0, column = 3, sticky = tkinter.W + tkinter.E)
 
         self.saveImageButton = tkinter.Button(self.button_frame, command=self.saveFinalImage, text="SaveFinalImage")
-        self.saveImageButton.grid(row = 0, column = 3, sticky = tkinter.W + tkinter.E)
+        self.saveImageButton.grid(row = 0, column = 4, sticky = tkinter.W + tkinter.E)
 
         # configure the button frame
         self.button_frame.columnconfigure(0, weight=1)
         self.button_frame.columnconfigure(1, weight=1)
         self.button_frame.columnconfigure(2, weight=1)
         self.button_frame.columnconfigure(3, weight=1)
+        self.button_frame.columnconfigure(4, weight=1)
 
+    # reload the manipulated image, in order to remove the drawn elements
+    def resetDrawing(self):
+
+        self.originalImageCV = cv2.imread(self.imageName)
+        self.cv_img = cv2.cvtColor(self.originalImageCV, cv2.COLOR_BGR2RGB)
+
+        self.updateImage(self.cv_img)
+
+    def addUIElements(self):
+
+        self.addSlider()
+        
+        self.addButtons()
 
     def saveFinalImage(self):
 
@@ -228,7 +265,6 @@ class App:
         
     def updateImage(self, openCVImage = np.array([])):
 
-        print(len(openCVImage))
         if len(openCVImage) == 0:
             openCVImage = self.cv_img
 

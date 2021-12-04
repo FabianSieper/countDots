@@ -65,6 +65,8 @@ If you are happy with your selected settings, you can save the final image by pr
 
 Use the mouse to narrow down the area of interest by overdrawing areas. Points are not searched in overdrawn areas.
 
+If a mistake was made while selecting an area, pressing the button _Reset_ reloads the original image and removes selected areas.
+
 ## Further settings
 
 Further settings, have to be changed inside of the file `code/settings.json`. For further information lookup descriptions in secion _Usage (Raw)_. 

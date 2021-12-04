@@ -5,11 +5,11 @@
         "s3": 16000
     },
     "saturation": {
-        "saturationIncrease": 23,
+        "saturationIncrease": 22,
         "showImage": false
     },
     "contrast": {
-        "contrastIncrease": 4,
+        "contrastIncrease": 2,
         "showImage": false
     },
     "color": {
