@@ -22,11 +22,13 @@ To use this application a python of version `3.9.7` (https://www.python.org/down
 - numpy
 - pillow
 
-To install these packages simply copy the following command into your command line:
+To install these packages simply copy the following command into your command line
 
 ```
-pip install tk numpy opencv-python tqdm
+pip install -r requirements.txt
 ```
+
+or execute the script _installRequirements.bat_. This script automatically installs all required packages.
 
 ### Pulling the project
 To pull the project using git type the following line:
