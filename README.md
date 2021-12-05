@@ -42,7 +42,7 @@ python app.py
 
 or **double click** the file _app.py_.
 
-## Slides
+## Slider
 
 You can modify contrast and saturation by sliding the corresponding slider. 
 

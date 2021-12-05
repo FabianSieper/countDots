@@ -2,10 +2,8 @@
 # Name: Fabian Sieper
 # Email: sieper.fabian@outlook.com
 
-import PIL
 import cv2
 import numpy as np
-import math
 from PIL import Image, ImageEnhance, ImageShow
 import os
 from helperFunctions import addTextToImage
