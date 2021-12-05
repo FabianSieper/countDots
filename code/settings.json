@@ -1,15 +1,15 @@
 {
     "sizes": {
-        "s1": 12,
+        "s1": 146,
         "s2": 6071,
         "s3": 23393
     },
     "saturation": {
-        "saturationIncrease": 56,
+        "saturationIncrease": 2,
         "showImage": false
     },
     "contrast": {
-        "contrastIncrease": 4,
+        "contrastIncrease": 1,
         "showImage": false
     },
     "color": {
@@ -24,7 +24,7 @@
             255
         ]
     },
-    "source": "file",
+    "source": "folder",
     "showFinalImage": false,
     "overlayOriginalImage": 0.7,
     "saveImage": true,
@@ -72,6 +72,6 @@
     },
     "canvasSize": 600,
     "brush": {
-        "linewidth": 17
+        "linewidth": 100
     }
 }

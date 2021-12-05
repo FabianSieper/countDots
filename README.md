@@ -20,6 +20,7 @@ To use this application a python of version `3.9.7` (https://www.python.org/down
 - tkinter
 - tqdm
 - numpy
+- pillow
 
 To install these packages simply copy the following command into your command line:
 
@@ -60,16 +61,31 @@ You can modify contrast and saturation by sliding the corresponding slider.
 - **Max Dot collection-size**
   - Set the maximal size, a collection of dots can have
 
-## Previews
+
+
+## Buttons
+
+### Previews
 
 There are three different previews, which can accessed:
 
 - **Contrast boost**
-  - Displays the original selected image, which has an increase in contrast. 
+  - Displays the original selected image, which has an increase in contrast. For this click on the button named `ShowContrImg`.
 - **Saturation boost**
-  - Displays the contrast-increased image in addition with an increase in saturation.
+  - Displays the contrast-increased image in addition with an increase in saturation. For this click on the button named `ShowSatImg`.
 - **Final image**
-  - Displays the final image, containing the detected dots, the amount of detected dots and further possibilities. For further possibilities read the section _Usage (Raw)_.
+  - Displays the final image, containing the detected dots, the amount of detected dots and further possibilities. For further possibilities read the section _Usage (Raw)_. For this click on the button named `Compute`.
+
+### Control Elements
+
+- **Previous Image**
+  - This buttons only appears, if you choose to process multiple files inside a folder. The button iterates backward through the images inside of the folder.
+- **Next Image**
+  - This buttons only appears, if you choose to process multiple files inside a folder. The button iterates forward through the images inside of the folder.
+- **Save Final Image**
+  - This button saves the final image, which is displayed by pressing the button _Compute_. The files are by default stored in the processedFiles folder inside the project directory.
+- **Reset**
+  - When selecting an area of interest, mistakes can be made. Pressing the button _Reset_ resets the selected area and reloads the original image. 
 
 ## Saving a processed image
 

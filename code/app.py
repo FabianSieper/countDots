@@ -96,21 +96,25 @@ class App:
     def reset(self, event):
         self.old_x, self.old_y = None, None
 
-    def loadNewImage(self):
+    def loadNewImage(self, loadFirstImage = True):
 
         # check if a single file or a whole folder shall be computed
         if self.settings["source"] == "file":
             self.imageName = askopenfilename()
 
-        elif self.imageIndex == 0:  # if not file has been read of the folder by now
+        elif loadFirstImage:  # if no file has been read of the folder by now
             self.imageDir = askdirectory()  
             self.listOfImages = os.listdir(self.imageDir)
             self.imageName = os.path.join(self.imageDir, self.listOfImages[self.imageIndex])
 
-        elif self.imageIndex > 0:   # if images already have been read
+        else:   # if images already have been read
             self.imageName = os.path.join(self.imageDir, self.listOfImages[self.imageIndex])
 
         self.originalImageCV = cv2.imread(self.imageName)
+
+        # transpose image if the image is in portrait mode
+        if self.originalImageCV.shape[0] > self.originalImageCV.shape[1]:
+            self.originalImageCV = cv2.transpose(self.originalImageCV)
 
         self.cv_img = cv2.cvtColor(self.originalImageCV, cv2.COLOR_BGR2RGB)
 
@@ -253,13 +257,6 @@ class App:
         self.slider_frame1.columnconfigure(0, weight=1)
         self.slider_frame1.columnconfigure(1, weight=1)
         self.slider_frame1.columnconfigure(2, weight=1)
-        self.slider_frame1.columnconfigure(3, weight=1)
-        self.slider_frame1.columnconfigure(4, weight=1)
-        self.slider_frame1.columnconfigure(5, weight=1)
-        self.slider_frame1.columnconfigure(6, weight=1)
-        self.slider_frame1.columnconfigure(7, weight=1)
-        self.slider_frame1.columnconfigure(8, weight=1)
-        self.slider_frame1.columnconfigure(9, weight=1)
 
     def addButtons(self):
         
@@ -270,37 +267,50 @@ class App:
         self.button_frame = tkinter.Frame(self.window)
         self.button_frame.pack(fill=tkinter.X, side=tkinter.BOTTOM)
 
+        columnCounter = 0
+
         # if multiple images shall be process, add a "next" button,
         if self.settings["source"] != "file":
 
             self.nextImgButton = tkinter.Button(self.button_frame, command=self.nextImage, text="Next Image", anchor=CENTER)
-            self.nextImgButton.grid(row = 0, column = 5)
+            self.nextImgButton.grid(row = 0, column = 6)
+
+            self.prevImgButton = tkinter.Button(self.button_frame, command=self.prevImage, text="Previous Image", anchor=CENTER)
+            self.prevImgButton.grid(row = 0, column = columnCounter)
+            columnCounter += 1
 
         ## append static buttons
         self.resetDrawingButton = tkinter.Button(self.button_frame, command=self.resetDrawing, text="Reset")
-        self.resetDrawingButton.grid(row = 0, column = 0, sticky = tkinter.W + tkinter.E)
+        self.resetDrawingButton.grid(row = 0, column = columnCounter, sticky = tkinter.W + tkinter.E)
+        columnCounter += 1
 
         self.showContrImgButton = tkinter.Button(self.button_frame, command=self.computeAndShowContrImg, text="ShowContrImg")
-        self.showContrImgButton.grid(row = 0, column = 1, sticky = tkinter.W + tkinter.E)
+        self.showContrImgButton.grid(row = 0, column = columnCounter, sticky = tkinter.W + tkinter.E)
+        columnCounter += 1
 
         self.showSatImgButton = tkinter.Button(self.button_frame, command=self.computeAndShowSatImg, text="ShowSatImg")
-        self.showSatImgButton.grid(row = 0, column = 2, sticky = tkinter.W + tkinter.E)
+        self.showSatImgButton.grid(row = 0, column = columnCounter, sticky = tkinter.W + tkinter.E)
+        columnCounter += 1
 
         self.computeButton = tkinter.Button(self.button_frame, command=self.computeAndShowFinalImg, text="Compute")
-        self.computeButton.grid(row = 0, column = 3, sticky = tkinter.W + tkinter.E)
+        self.computeButton.grid(row = 0, column = columnCounter, sticky = tkinter.W + tkinter.E)
+        columnCounter += 1
 
         self.saveImageButton = tkinter.Button(self.button_frame, command=self.saveFinalImage, text="SaveFinalImage")
-        self.saveImageButton.grid(row = 0, column = 4, sticky = tkinter.W + tkinter.E)
+        self.saveImageButton.grid(row = 0, column = columnCounter, sticky = tkinter.W + tkinter.E)
+        columnCounter += 1
 
         # configure the button frame
         self.button_frame.columnconfigure(0, weight=1)
         self.button_frame.columnconfigure(1, weight=1)
         self.button_frame.columnconfigure(2, weight=1)
         self.button_frame.columnconfigure(3, weight=1)
+        self.button_frame.columnconfigure(4, weight=1)
 
         if self.settings["source"] != "file":
 
-            self.button_frame.columnconfigure(4, weight=1)
+            self.button_frame.columnconfigure(5, weight=1)
+            self.button_frame.columnconfigure(6, weight=1)
 
 
     # sets the next image in the list of images 
@@ -311,18 +321,39 @@ class App:
         if len(self.listOfImages) > self.imageIndex and self.imageDir != None:
             
             self.imageName = os.path.join(self.imageDir, self.listOfImages[self.imageIndex])
-            self.loadNewImage() # reads the new image 
+            self.loadNewImage(loadFirstImage=False) # reads the new image 
             self.createCanvas(update=True)
             self.updateImage(self.cv_img)
 
         elif len(self.listOfImages) <= self.imageIndex:
 
             print("[INFO] - The last image inside of the folder has been reached.")
+            self.imageIndex = len(self.listOfImages) - 1
 
         else:
 
             print("[WARNING] - Not able to go to load the next image!")
 
+    # sets the previous image in the list of images 
+    def prevImage(self):
+
+        self.imageIndex -= 1
+
+        if 0 <= self.imageIndex and self.imageDir != None:
+            
+            self.imageName = os.path.join(self.imageDir, self.listOfImages[self.imageIndex])
+            self.loadNewImage(loadFirstImage=False) # reads the new image 
+            self.createCanvas(update=True)
+            self.updateImage(self.cv_img)
+
+        elif 0 > self.imageIndex:
+
+            print("[INFO] - The first image inside of the folder has been reached.")
+            self.imageIndex = 0
+
+        else:
+
+            print("[WARNING] - Not able to go to load the previous image!")
 
 
     # reload the manipulated image, in order to remove the drawn elements
