@@ -10,6 +10,9 @@ import os
 from tqdm import tqdm
 from helperFunctions import readSettings
 
+
+print("Hello to my point counting program!")
+
 # hide the tk window
 Tk().withdraw() 
 
